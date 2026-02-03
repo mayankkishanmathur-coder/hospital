@@ -131,3 +131,12 @@ hospital_project/
 ## 📄 License
 
 This project is developed for academic and learning purposes.
+
+## Author
+
+This Project is Published By The Following Members :-
+- Mayank Kishan Mathur 
+- Ashutosh Singh Negi
+- Nikhil Shardul Haq Jha
+- Ashutosh Ranjan
+- Milind Parashar
