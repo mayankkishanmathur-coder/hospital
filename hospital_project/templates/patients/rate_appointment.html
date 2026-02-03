@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block title %}Rate Appointment - MediBridge{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1>Rate Your Appointment</h1>
+        <p class="text-white-50">Help us improve our services with your feedback</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-6 mx-auto">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Appointment Details</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Doctor:</strong><br>
+                    Dr. {{ appointment.doctor.user.first_name }} {{ appointment.doctor.user.last_name }}</p>
+                    
+                    <p><strong>Specialization:</strong><br>
+                    {{ appointment.doctor.specialization }}</p>
+
+                    <p><strong>Date:</strong><br>
+                    {{ appointment.appointment_date }} at {{ appointment.appointment_time }}</p>
+                </div>
+            </div>
+
+            <form method="post" class="card">
+                {% csrf_token %}
+
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Your Feedback</h5>
+                </div>
+
+                <div class="card-body">
+                    <div class="mb-4">
+                        <label for="rating" class="form-label"><strong>How would you rate your experience? *</strong></label>
+                        <div class="rating-stars" id="rating-container">
+                            {% for i in "12345" %}
+                                <input type="radio" id="star{{ i }}" name="rating" value="{{ i }}" style="display: none;">
+                                <label for="star{{ i }}" class="rating-label" data-value="{{ i }}">
+                                    <i class="bi bi-star"></i>
+                                </label>
+                            {% endfor %}
+                        </div>
+                        <small class="text-muted d-block mt-2">Click on a star to rate (1 = Poor, 5 = Excellent)</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="review_text" class="form-label">Your Review (Optional)</label>
+                        <textarea class="form-control" id="review_text" name="review_text" rows="4" placeholder="Share your experience with this doctor...">{% if existing_rating %}{{ existing_rating.review_text }}{% endif %}</textarea>
+                        <small class="text-muted">Share what you liked, constructive feedback, or any suggestions</small>
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="is_anonymous" name="is_anonymous" {% if existing_rating and existing_rating.is_anonymous %}checked{% endif %}>
+                        <label class="form-check-label" for="is_anonymous">
+                            Submit review anonymously
+                        </label>
+                    </div>
+                </div>
+
+                <div class="card-footer d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a href="{% url 'patient_dashboard' %}" class="btn btn-secondary">Skip</a>
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-check-circle"></i> Submit Review
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% if existing_rating %}
+<script>
+    var existingRating = "{{ existing_rating.rating }}";
+</script>
+{% endif %}
+
+<script>
+    // Ensure radio buttons work properly with star ratings
+    document.querySelectorAll('.rating-label').forEach(label => {
+        label.addEventListener('click', function() {
+            this.previousElementSibling.checked = true;
+        });
+    });
+
+    // Set initial checked state if existing rating
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof existingRating !== 'undefined') {
+            const checked = document.querySelector('input[value="' + existingRating + '"]');
+            if (checked) {
+                checked.checked = true;
+            }
+        }
+    });
+</script>
+{% endblock %}

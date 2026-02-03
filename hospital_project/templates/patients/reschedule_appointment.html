@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Reschedule Appointment - MediBridge{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1>Reschedule Appointment</h1>
+        <p class="text-white-50">Change your appointment date and time</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-6 mx-auto">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Current Appointment</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Doctor:</strong><br>
+                    Dr. {{ appointment.doctor.user.first_name }} {{ appointment.doctor.user.last_name }}</p>
+                    
+                    <p><strong>Current Date & Time:</strong><br>
+                    {{ appointment.appointment_date }} at {{ appointment.appointment_time }}</p>
+                </div>
+            </div>
+
+            <form method="post" class="card">
+                {% csrf_token %}
+
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">New Schedule</h5>
+                </div>
+
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="appointment_date" class="form-label">New Date *</label>
+                        <input type="date" class="form-control" id="appointment_date" name="appointment_date" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="appointment_time" class="form-label">New Time *</label>
+                        <input type="time" class="form-control" id="appointment_time" name="appointment_time" required>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle"></i> Please select a time within the doctor's available hours. 
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#availabilityModal">View availability</a>
+                    </div>
+                </div>
+
+                <div class="card-footer d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a href="{% url 'patient_dashboard' %}" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-calendar-check"></i> Reschedule
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Arial, sans-serif; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9; }
+        .header { background-color: #007bff; color: white; padding: 20px; border-radius: 5px 5px 0 0; }
+        .content { background-color: white; padding: 20px; border: 1px solid #ddd; border-top: none; }
+        .footer { background-color: #f0f0f0; padding: 15px; text-align: center; font-size: 12px; border: 1px solid #ddd; border-top: none; border-radius: 0 0 5px 5px; }
+        .alert { padding: 12px; margin: 15px 0; border-radius: 4px; }
+        .alert-warning { background-color: #fff3cd; border: 1px solid #ffc107; color: #856404; }
+        .alert-success { background-color: #d4edda; border: 1px solid #28a745; color: #155724; }
+        .info-box { background-color: #f8f9fa; padding: 15px; margin: 15px 0; border-left: 4px solid #007bff; border-radius: 4px; }
+        .badge { display: inline-block; padding: 5px 10px; margin: 3px; border-radius: 3px; font-size: 12px; font-weight: bold; }
+        .badge-info { background-color: #17a2b8; color: white; }
+        .badge-warning { background-color: #ffc107; color: black; }
+        .badge-danger { background-color: #dc3545; color: white; }
+        .button { display: inline-block; background-color: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; margin-top: 10px; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        table td { padding: 8px; border-bottom: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Your Self-Diagnosis Results</h2>
+        </div>
+        
+        <div class="content">
+            <p>Hello <strong>{{ patient_name }}</strong>,</p>
+            
+            <p>Your self-diagnosis assessment has been completed. Here are the results:</p>
+            
+            <div class="info-box">
+                <h4>Predicted Condition</h4>
+                <p style="font-size: 18px; font-weight: bold; color: #007bff; margin: 10px 0;">
+                    {{ condition }}
+                </p>
+                
+                <p><strong>Recommended Specialization:</strong> {{ specialization }}</p>
+                <p>
+                    <strong>Confidence Level:</strong>
+                    <span class="badge {% if confidence >= 80 %}badge-info{% elif confidence >= 60 %}badge-warning{% else %}badge-danger{% endif %}">
+                        {{ confidence }}%
+                    </span>
+                </p>
+            </div>
+            
+            <div class="info-box">
+                <h4>Symptoms Analyzed</h4>
+                <p>
+                    {% for symptom in symptoms %}
+                        <span class="badge badge-info">{{ symptom.name }}</span>
+                    {% endfor %}
+                </p>
+            </div>
+            
+            {% if has_urgent %}
+                <div class="alert alert-warning">
+                    <strong>⚠️ Important:</strong> Your assessment includes urgent symptoms. Please seek immediate medical attention if you're experiencing severe symptoms.
+                </div>
+            {% endif %}
+            
+            {% if confidence < 60 %}
+                <div class="alert alert-warning">
+                    <strong>⚠️ Low Confidence:</strong> The prediction confidence is below 60%. Please consult with a healthcare professional for accurate diagnosis and treatment.
+                </div>
+            {% else %}
+                <div class="alert alert-success">
+                    <strong>✓ Next Steps:</strong> You can now book an appointment with a specialist in the recommended field.
+                </div>
+            {% endif %}
+            
+            <p style="margin-top: 20px;">
+                <a href="http://127.0.0.1:8000/diagnosis/results/{{ record_id }}/" class="button">
+                    View Full Results & Book Appointment
+                </a>
+            </p>
+            
+            <p style="margin-top: 20px; font-size: 12px; color: #666;">
+                <strong>Disclaimer:</strong> This self-diagnosis tool is for informational purposes only and should not be used as a substitute for professional medical advice. Always consult with a qualified healthcare professional for accurate diagnosis and treatment.
+            </p>
+        </div>
+        
+        <div class="footer">
+            <p>Hospital Management System</p>
+            <p>© 2026 All Rights Reserved</p>
+        </div>
+    </div>
+</body>
+</html>

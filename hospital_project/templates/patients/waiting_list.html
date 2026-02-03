@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %}Waiting List - MediBridge{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1>Waiting List</h1>
+        <p class="text-white-50">Track your waiting list for preferred appointments</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    {% if entries %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Position</th>
+                        <th>Doctor</th>
+                        <th>Specialization</th>
+                        <th>Preferred Dates</th>
+                        <th>Reason</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in entries %}
+                        <tr>
+                            <td>
+                                <span class="badge bg-info">{{ entry.position_in_queue }}</span>
+                            </td>
+                            <td>
+                                Dr. {{ entry.doctor.user.first_name }} {{ entry.doctor.user.last_name }}
+                            </td>
+                            <td>
+                                {{ entry.doctor.specialization }}
+                            </td>
+                            <td>
+                                {{ entry.preferred_date_from }} to {{ entry.preferred_date_to }}
+                            </td>
+                            <td>
+                                {{ entry.reason|truncatewords:10 }}
+                            </td>
+                            <td>
+                                {% if entry.status == 'waiting' %}
+                                    <span class="badge bg-warning">Waiting</span>
+                                {% elif entry.status == 'offered' %}
+                                    <span class="badge bg-info">Offered</span>
+                                {% elif entry.status == 'booked' %}
+                                    <span class="badge bg-success">Booked</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Cancelled</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if entry.status == 'offered' %}
+                                    <a href="{% url 'book_appointment' %}" class="btn btn-sm btn-primary">Book Now</a>
+                                {% else %}
+                                    <button class="btn btn-sm btn-secondary" disabled>Waiting</button>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="alert alert-info mt-4">
+            <i class="bi bi-info-circle"></i> 
+            <strong>How it works:</strong> We'll notify you as soon as a slot becomes available with your preferred doctor within your preferred dates. 
+            You'll have 24 hours to confirm the booking.
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center">
+            <h4>No Waiting List Entries</h4>
+            <p>You're not currently waiting for any appointments.</p>
+            <a href="{% url 'book_appointment' %}" class="btn btn-primary">Book an Appointment</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

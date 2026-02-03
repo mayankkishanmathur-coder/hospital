@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}Medical History - MediBridge{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1>Medical History</h1>
+        <p class="text-white-50">View your complete medical records</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    {% if history %}
+        <div class="row">
+            {% for record in history %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">{{ record.appointment.appointment_date }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>Doctor:</strong><br>
+                            Dr. {{ record.appointment.doctor.user.first_name }} {{ record.appointment.doctor.user.last_name }}</p>
+                            
+                            <p><strong>Specialization:</strong><br>
+                            {{ record.appointment.doctor.specialization }}</p>
+
+                            {% if record.diagnosis %}
+                                <p><strong>Diagnosis:</strong><br>
+                                <small>{{ record.diagnosis|truncatewords:20 }}</small></p>
+                            {% endif %}
+
+                            {% if record.medications %}
+                                <p><strong>Medications:</strong><br>
+                                <small>{{ record.medications|truncatewords:15 }}</small></p>
+                            {% endif %}
+
+                            {% if record.allergies %}
+                                <p><strong>Allergies:</strong><br>
+                                <small class="text-danger">{{ record.allergies }}</small></p>
+                            {% endif %}
+
+                            <small class="text-muted">Recorded: {{ record.created_at|date:"M d, Y H:i" }}</small>
+                        </div>
+                        <div class="card-footer">
+                            <a href="{% url 'view_prescription' record.id %}" class="btn btn-sm btn-info">
+                                <i class="bi bi-file-pdf"></i> View Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center">
+            <h4>No Medical History</h4>
+            <p>Your medical records will appear here after appointments are completed.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

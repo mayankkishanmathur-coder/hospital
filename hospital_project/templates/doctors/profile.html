@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+
+{% block title %}Doctor Profile - MediBridge{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1>My Profile</h1>
+        <p class="text-white-50">Manage your professional information</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <form method="post" enctype="multipart/form-data" class="mb-4">
+                {% csrf_token %}
+                
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Professional Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">First Name</label>
+                                <input type="text" class="form-control" value="{{ user.first_name }}" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Last Name</label>
+                                <input type="text" class="form-control" value="{{ user.last_name }}" disabled>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">License Number</label>
+                            <input type="text" class="form-control" value="{{ doctor.license_number }}" disabled>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Specialization</label>
+                                <input type="text" class="form-control" value="{{ doctor.specialization }}" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Experience (Years)</label>
+                                <input type="text" class="form-control" value="{{ doctor.experience_years }}" disabled>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Consultation Fee ($)</label>
+                            <input type="number" class="form-control" name="consultation_fee" value="{{ doctor.consultation_fee }}" step="0.01">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" id="phone" name="phone" value="{{ doctor.phone }}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="clinic_address" class="form-label">Clinic Address</label>
+                            <textarea class="form-control" id="clinic_address" name="clinic_address" rows="2" required>{{ doctor.clinic_address }}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0">Professional Bio</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="bio" class="form-label">Biography</label>
+                            <textarea class="form-control" id="bio" name="bio" rows="4" placeholder="Write a brief biography...">{{ doctor.bio }}</textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="qualifications" class="form-label">Qualifications & Certifications</label>
+                            <textarea class="form-control" id="qualifications" name="qualifications" rows="4" placeholder="List your qualifications, certifications, and achievements...">{{ doctor.qualifications }}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">Profile Picture</h5>
+                    </div>
+                    <div class="card-body">
+                        {% if doctor.profile_image %}
+                            <div class="mb-3">
+                                <img src="{{ doctor.profile_image.url }}" alt="Profile" class="img-thumbnail" style="max-width: 200px;">
+                            </div>
+                        {% endif %}
+                        <div class="mb-3">
+                            <label for="profile_image" class="form-label">Upload New Picture</label>
+                            <input type="file" class="form-control" id="profile_image" name="profile_image" accept="image/*">
+                            <small class="text-muted">Recommended: Square image (500x500px)</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a href="{% url 'doctor_dashboard' %}" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-circle"></i> Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card mb-4">
+                <div class="card-header bg-warning">
+                    <h5 class="mb-0">Rating & Reviews</h5>
+                </div>
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <h3 class="text-warning">{{ doctor.rating|floatformat:1 }} / 5.0</h3>
+                        <div class="mb-2">
+                            {% for i in "12345" %}
+                                {% if i <= doctor.rating %}
+                                    <i class="bi bi-star-fill text-warning"></i>
+                                {% elif doctor.rating > i|add:"-1" %}
+                                    <i class="bi bi-star-half text-warning"></i>
+                                {% else %}
+                                    <i class="bi bi-star text-warning"></i>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <p class="text-muted">Based on {{ doctor.total_ratings }} reviews</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Recent Reviews</h5>
+                </div>
+                <div class="card-body" style="max-height: 400px; overflow-y: auto;">
+                    {% for review in reviews %}
+                        <div class="mb-3 pb-3 border-bottom">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    {% if review.is_anonymous %}
+                                        <strong>Anonymous Patient</strong>
+                                    {% else %}
+                                        <strong>{{ review.patient.user.first_name }}</strong>
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    {% for i in "12345" %}
+                                        {% if i <= review.rating %}
+                                            <i class="bi bi-star-fill text-warning"></i>
+                                        {% else %}
+                                            <i class="bi bi-star text-warning"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% if review.review_text %}
+                                <p class="small mt-2">{{ review.review_text|truncatewords:20 }}</p>
+                            {% endif %}
+                            <small class="text-muted">{{ review.created_at|date:"M d, Y" }}</small>
+                        </div>
+                    {% empty %}
+                        <p class="text-muted">No reviews yet. Start building your reputation!</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

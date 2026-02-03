@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Refund Request - MediBridge{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1>Request Refund</h1>
+        <p class="text-white-50">Process a refund for your appointment</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            {% if error %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ error }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endif %}
+
+            <div class="card">
+                <div class="card-header bg-warning text-dark">
+                    <h4 class="mb-0">Refund Details</h4>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <p><strong>Appointment:</strong></p>
+                        <p>Dr. {{ appointment.doctor.user.first_name }} {{ appointment.doctor.user.last_name }}</p>
+                        <p class="text-muted">{{ appointment.appointment_date }} at {{ appointment.appointment_time }}</p>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="mb-3">
+                        <p><strong>Refund Amount:</strong></p>
+                        <p class="h5">${{ appointment.doctor.consultation_fee }}</p>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle"></i> The refund will be processed to your original payment method within 5-7 business days.
+                    </div>
+
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="reason" class="form-label">Reason for Refund (Optional)</label>
+                            <textarea class="form-control" id="reason" name="reason" rows="3" placeholder="Please let us know why you're requesting a refund..."></textarea>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{% url 'patient_dashboard' %}" class="btn btn-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-warning">
+                                <i class="bi bi-exclamation-triangle"></i> Process Refund
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,1157 @@
+{% extends 'base.html' %}
+
+{% block title %}MediBridge - Smart Healthcare Management{% endblock %}
+
+{% block content %}
+<!-- About Hero -->
+<div class="about-hero">
+    <div class="container">
+        <div style="text-align: center;">
+            <h1><i class="bi bi-info-circle"></i> About MediBridge</h1>
+            <p>Transforming Healthcare Through Technology and Compassion</p>
+        </div>
+    </div>
+</div>
+
+    /* Mission Vision Section */
+    .mission-vision {
+        background: var(--light-gray);
+        padding: 5rem 0;
+    }
+
+    .mission-card, .vision-card {
+        padding: 3rem;
+        border-radius: 16px;
+        color: white;
+        min-height: 300px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        box-shadow: var(--card-shadow);
+    }
+
+    .mission-card {
+        background: linear-gradient(135deg, #5b6dd1 0%, #7c3aed 100%);
+    }
+
+    .vision-card {
+        background: linear-gradient(135deg, #ec4899 0%, #f43f5e 100%);
+    }
+
+    .mission-card h3, .vision-card h3 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+
+    .mission-card p, .vision-card p {
+        font-size: 1.05rem;
+        line-height: 1.8;
+    }
+
+    /* Story Section */
+    .story-section {
+        background: linear-gradient(135deg, #2c5aa0 0%, #3b82c4 100%);
+        color: white;
+        padding: 5rem 0;
+        text-align: center;
+    }
+
+    .story-icon {
+        font-size: 3rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .story-section h2 {
+        font-size: 3rem;
+        font-weight: 800;
+        margin-bottom: 2rem;
+    }
+
+    .story-section p {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        opacity: 0.95;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    /* Testimonials Section */
+    .testimonials-section {
+        background: var(--light-gray);
+        padding: 5rem 0;
+    }
+
+    .testimonials-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--dark-navy);
+        text-align: center;
+        margin-bottom: 0.5rem;
+    }
+
+    .testimonials-subtitle {
+        text-align: center;
+        color: #64748b;
+        margin-bottom: 3rem;
+    }
+
+    .testimonial-card {
+        background: white;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: var(--card-shadow);
+        transition: all 0.3s ease;
+    }
+
+    .testimonial-card:hover {
+        box-shadow: var(--hover-shadow);
+        transform: translateY(-5px);
+    }
+
+    .testimonial-text {
+        color: #475569;
+        margin-bottom: 1.5rem;
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+
+    .testimonial-author {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .author-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        color: white;
+        font-size: 1.2rem;
+    }
+
+    .avatar-blue { background: var(--primary-blue); }
+    .avatar-green { background: #10b981; }
+    .avatar-red { background: #ef4444; }
+
+    .author-info h4 {
+        color: var(--dark-navy);
+        font-weight: 700;
+        margin: 0;
+    }
+
+    .author-info p {
+        color: #64748b;
+        font-size: 0.85rem;
+        margin: 0;
+    }
+
+    /* Patient or Doctor Section */
+    .patient-doctor-section {
+        background: white;
+        padding: 5rem 0;
+    }
+
+    .patient-doctor-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--dark-navy);
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .patient-doctor-card {
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: var(--card-shadow);
+        transition: all 0.3s ease;
+    }
+
+    .patient-doctor-card:hover {
+        box-shadow: var(--hover-shadow);
+    }
+
+    .patient-doctor-header {
+        padding: 2rem;
+        color: white;
+        font-size: 1.6rem;
+        font-weight: 700;
+    }
+
+    .patient-header {
+        background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 100%);
+    }
+
+    .doctor-header {
+        background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+    }
+
+    .patient-doctor-content {
+        background: white;
+        padding: 2rem;
+    }
+
+    .feature-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .feature-list li {
+        padding: 0.8rem 0;
+        color: #475569;
+        border-bottom: 1px solid #f0f0f0;
+        font-size: 0.95rem;
+    }
+
+    .feature-list li:last-child {
+        border-bottom: none;
+    }
+
+    .feature-list strong {
+        color: var(--dark-navy);
+        font-weight: 600;
+    }
+
+    .patient-doctor-btn {
+        display: block;
+        text-align: center;
+        padding: 1rem;
+        margin-top: 1.5rem;
+        background: var(--primary-blue);
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+    }
+
+    .patient-doctor-btn:hover {
+        background: #0284c7;
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    .doctor-btn {
+        background: #10b981 !important;
+    }
+
+    .doctor-btn:hover {
+        background: #059669 !important;
+    }
+
+    /* How It Works Section */
+    .how-works {
+        background: var(--light-gray);
+        padding: 5rem 0;
+    }
+
+    .how-works-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--dark-navy);
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+
+    .how-works-subtitle {
+        text-align: center;
+        color: #64748b;
+        margin-bottom: 3rem;
+        font-size: 1.1rem;
+    }
+
+    .step-circle {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        margin: 0 auto 1.5rem;
+        box-shadow: var(--card-shadow);
+    }
+
+    .step-blue { background: var(--primary-blue); color: white; }
+    .step-green { background: #10b981; color: white; }
+    .step-red { background: #ef4444; color: white; }
+
+    .step-card {
+        text-align: center;
+    }
+
+    .step-card h4 {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--dark-navy);
+        margin-bottom: 1rem;
+    }
+
+    .step-card p {
+        color: #64748b;
+        line-height: 1.6;
+    }
+
+    .stats-section {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 2rem;
+        margin-top: 3rem;
+        text-align: center;
+    }
+
+    .stat-box {
+        padding: 2rem;
+        background: white;
+        border-radius: 12px;
+        box-shadow: var(--card-shadow);
+    }
+
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--primary-blue);
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+        color: #64748b;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+
+    /* Services Section */
+    .services-section {
+        background: white;
+        padding: 5rem 0;
+    }
+
+    .services-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--dark-navy);
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .service-card {
+        background: white;
+        border: 2px solid transparent;
+        border-top: 5px solid var(--primary-blue);
+        border-radius: 12px;
+        padding: 2rem;
+        box-shadow: var(--card-shadow);
+        transition: all 0.3s ease;
+    }
+
+    .service-card:hover {
+        box-shadow: var(--hover-shadow);
+        transform: translateY(-5px);
+    }
+
+    .service-icon {
+        font-size: 2.5rem;
+        color: var(--primary-blue);
+        margin-bottom: 1rem;
+    }
+
+    .service-card h4 {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--dark-navy);
+        margin-bottom: 1rem;
+    }
+
+    .service-card p {
+        color: #64748b;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+    }
+
+    .service-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .service-list li {
+        color: #10b981;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    /* Premium Features Section */
+    .premium-section {
+        background: var(--light-gray);
+        padding: 5rem 0;
+    }
+
+    .premium-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--dark-navy);
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .premium-card {
+        background: linear-gradient(135deg, #5b6dd1 0%, #7c3aed 100%);
+        color: white;
+        padding: 3rem;
+        border-radius: 16px;
+        box-shadow: var(--card-shadow);
+    }
+
+    .premium-card h3 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+    }
+
+    .premium-card p {
+        margin-bottom: 1.5rem;
+        font-size: 1.05rem;
+        line-height: 1.7;
+    }
+
+    .premium-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .premium-list li {
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        font-size: 1.05rem;
+    }
+
+    /* Contact Section */
+    .contact-hero {
+        background: linear-gradient(135deg, #2c5aa0 0%, #3b82c4 100%);
+        color: white;
+        padding: 4rem 0;
+        text-align: center;
+    }
+
+    .contact-hero h2 {
+        font-size: 3rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+    }
+
+    .contact-hero p {
+        font-size: 1.2rem;
+        opacity: 0.95;
+    }
+
+    .contact-section {
+        background: white;
+        padding: 5rem 0;
+    }
+
+    .contact-form {
+        background: white;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: var(--card-shadow);
+    }
+
+    .contact-form h3 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--dark-navy);
+        margin-bottom: 2rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: var(--dark-navy);
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 0.8rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        font-family: inherit;
+        font-size: 0.95rem;
+    }
+
+    .form-group textarea {
+        resize: vertical;
+        min-height: 120px;
+    }
+
+    .submit-btn {
+        background: var(--primary-blue);
+        color: white;
+        padding: 1rem 2rem;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        width: 100%;
+        transition: all 0.3s ease;
+    }
+
+    .submit-btn:hover {
+        background: #0284c7;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(14, 165, 233, 0.3);
+    }
+
+    .contact-info {
+        padding: 2rem;
+    }
+
+    .contact-item {
+        margin-bottom: 2rem;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .contact-item:last-child {
+        border-bottom: none;
+    }
+
+    .contact-item-icon {
+        font-size: 2.5rem;
+        color: var(--primary-blue);
+        margin-bottom: 1rem;
+    }
+
+    .contact-item h4 {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--dark-navy);
+        margin-bottom: 0.5rem;
+    }
+
+    .contact-item p {
+        color: #64748b;
+        margin: 0;
+    }
+
+    .contact-item a {
+        color: var(--primary-blue);
+        text-decoration: none;
+    }
+
+    .contact-item a:hover {
+        text-decoration: underline;
+    }
+
+    /* FAQ Section */
+    .faq-section {
+        background: var(--light-gray);
+        padding: 5rem 0;
+    }
+
+    .faq-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--dark-navy);
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .faq-item {
+        background: white;
+        margin-bottom: 1.5rem;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: var(--card-shadow);
+    }
+
+    .faq-question {
+        padding: 1.5rem;
+        background: #f8f9fa;
+        font-weight: 600;
+        color: var(--dark-navy);
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: all 0.3s ease;
+    }
+
+    .faq-question:hover {
+        background: #e8ecf1;
+    }
+
+    .faq-answer {
+        padding: 1.5rem;
+        color: #64748b;
+        line-height: 1.7;
+        display: none;
+    }
+
+    .faq-answer.show {
+        display: block;
+    }
+
+    /* Social Media */
+    .social-links {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin-top: 2rem;
+    }
+
+    .social-link {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: var(--primary-blue);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.3rem;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .social-link:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 16px rgba(14, 165, 233, 0.3);
+    }
+
+    /* Footer */
+    .footer-section {
+        background: var(--dark-navy);
+        color: white;
+        padding: 3rem 0 1rem;
+    }
+
+    .footer-title {
+        font-size: 1rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: var(--primary-blue);
+    }
+
+    .footer-link {
+        color: #cbd5e1;
+        text-decoration: none;
+        display: block;
+        margin-bottom: 0.5rem;
+        transition: color 0.3s ease;
+        font-size: 0.9rem;
+    }
+
+    .footer-link:hover {
+        color: var(--primary-blue);
+    }
+
+    .footer-divider {
+        border-top: 1px solid #334155;
+        margin-top: 2rem;
+        padding-top: 2rem;
+        text-align: center;
+        color: #94a3b8;
+        font-size: 0.85rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .about-hero h1, .story-section h2 { font-size: 2rem; }
+        .how-works-title, .testimonials-title, .services-title, .faq-title,
+        .patient-doctor-title, .premium-title, .contact-hero h2 { font-size: 1.8rem; }
+        .mission-card, .vision-card { padding: 2rem; min-height: auto; }
+        .step-circle { width: 100px; height: 100px; font-size: 2rem; }
+        .stat-number { font-size: 2rem; }
+        .stats-section { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+    }
+</style>
+
+<!-- About Hero -->
+<div class="about-hero">
+    <div class="container">
+        <div style="text-align: center;">
+            <h1><i class="bi bi-info-circle"></i> About MediBridge</h1>
+            <p>Transforming Healthcare Through Technology and Compassion</p>
+        </div>
+    </div>
+</div>
+
+<!-- Mission & Vision -->
+<div class="mission-vision">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="mission-card">
+                    <h3><i class="bi bi-bullseye"></i> Our Mission</h3>
+                    <p>To provide a seamless, user-friendly platform that connects patients with qualified healthcare providers, enabling better health outcomes and improved quality of care.</p>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="vision-card">
+                    <h3><i class="bi bi-eye"></i> Our Vision</h3>
+                    <p>To become the most trusted and innovative healthcare platform in the region, where every patient can easily access quality care and every doctor can focus on what they do best.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Our Story -->
+<div class="story-section">
+    <div class="container">
+        <div class="story-icon"><i class="bi bi-book"></i></div>
+        <h2>Our Story</h2>
+        <p>MediBridge was founded with a simple but powerful vision: to bridge the gap between patients and healthcare providers. In today's fast-paced world, finding the right doctor and scheduling appointments shouldn't be complicated or time-consuming. We recognized that patients need a reliable platform to access quality healthcare, while doctors need efficient tools to manage their practice and focus on patient care. Our team of healthcare professionals, technology experts, and entrepreneurs came together to create a solution that benefits everyone in the healthcare ecosystem.</p>
+    </div>
+</div>
+
+<!-- Testimonials -->
+<div class="testimonials-section">
+    <div class="container">
+        <h2 class="testimonials-title">What Our Users Say</h2>
+        <p class="testimonials-subtitle">Real feedback from real patients and doctors</p>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"MediBridge made booking my doctor appointment so easy! No more waiting on the phone. Highly recommended!"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar avatar-blue">JD</div>
+                        <div class="author-info">
+                            <h4>John Doe</h4>
+                            <p>Patient</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"As a doctor, MediBridge has streamlined my appointment management. The dashboard is intuitive and helpful."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar avatar-green">DR</div>
+                        <div class="author-info">
+                            <h4>Dr. Sarah</h4>
+                            <p>Doctor</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"The platform is secure, reliable, and customer support is always responsive. Great experience overall!"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar avatar-red">AK</div>
+                        <div class="author-info">
+                            <h4>Aisha Khan</h4>
+                            <p>Patient</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Patient or Doctor -->
+<div class="patient-doctor-section">
+    <div class="container">
+        <h2 class="patient-doctor-title">Are You a Patient or Doctor?</h2>
+        <div class="row g-4">
+            <!-- Patient Card -->
+            <div class="col-lg-6">
+                <div class="patient-doctor-card">
+                    <div class="patient-doctor-header patient-header">For Patients</div>
+                    <div class="patient-doctor-content">
+                        <ul class="feature-list">
+                            <li><strong>Easy Registration</strong> - Sign up in seconds with basic details</li>
+                            <li><strong>Doctor Search</strong> - Find doctors by specialty and location</li>
+                            <li><strong>Book Appointments</strong> - Schedule at your preferred time</li>
+                            <li><strong>Manage Bookings</strong> - Cancel, reschedule, or track appointments</li>
+                            <li><strong>Health Records</strong> - Keep all your medical history in one place</li>
+                            <li><strong>Payments</strong> - Secure and easy payment options</li>
+                        </ul>
+                        <a href="{% url 'patient_login' %}" class="patient-doctor-btn">Patient Login</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Doctor Card -->
+            <div class="col-lg-6">
+                <div class="patient-doctor-card">
+                    <div class="patient-doctor-header doctor-header">For Doctors</div>
+                    <div class="patient-doctor-content">
+                        <ul class="feature-list">
+                            <li><strong>Professional Profile</strong> - Showcase your credentials and experience</li>
+                            <li><strong>Manage Schedule</strong> - Set availability and working hours</li>
+                            <li><strong>Review Requests</strong> - Review and approve appointment requests</li>
+                            <li><strong>Dashboard Analytics</strong> - Track appointments and statistics</li>
+                            <li><strong>Patient Management</strong> - View patient details and history</li>
+                            <li><strong>Earnings</strong> - Track and manage your earnings</li>
+                        </ul>
+                        <a href="{% url 'doctor_login' %}" class="patient-doctor-btn doctor-btn">Doctor Login</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- How It Works -->
+<div class="how-works">
+    <div class="container">
+        <h2 class="how-works-title">How MediBridge Works</h2>
+        <p class="how-works-subtitle">Simple 3-step process to get healthcare when you need it</p>
+        
+        <div class="row g-4 mb-5">
+            <div class="col-md-4">
+                <div class="step-card">
+                    <div class="step-circle step-blue"><i class="bi bi-search"></i></div>
+                    <h4>Find a Doctor</h4>
+                    <p>Browse our network of verified doctors, view their profiles, specializations, and availability.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="step-card">
+                    <div class="step-circle step-green"><i class="bi bi-calendar-check"></i></div>
+                    <h4>Book Appointment</h4>
+                    <p>Select your preferred date and time, provide your health details, and submit your booking request.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="step-card">
+                    <div class="step-circle step-red"><i class="bi bi-check-circle"></i></div>
+                    <h4>Confirmed & Ready</h4>
+                    <p>Doctor approves your appointment, you receive confirmation, and get ready for your consultation.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-section">
+            <div class="stat-box">
+                <div class="stat-number">500+</div>
+                <div class="stat-label">Verified Doctors</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">10K+</div>
+                <div class="stat-label">Happy Patients</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">50K+</div>
+                <div class="stat-label">Appointments</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">Customer Support</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Services for Doctors -->
+<div class="services-section">
+    <div class="container">
+        <h2 class="services-title">Services for Doctors</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="service-card">
+                    <div class="service-icon"><i class="bi bi-calendar-event"></i></div>
+                    <h4>Schedule Management</h4>
+                    <p>Easily manage your availability, set working hours, and control your appointment slots.</p>
+                    <ul class="service-list">
+                        <li><i class="bi bi-check-circle"></i> Flexible scheduling</li>
+                        <li><i class="bi bi-check-circle"></i> Availability control</li>
+                        <li><i class="bi bi-check-circle"></i> Automatic reminders</li>
+                        <li><i class="bi bi-check-circle"></i> Slot management</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="service-card">
+                    <div class="service-icon"><i class="bi bi-people"></i></div>
+                    <h4>Patient Management</h4>
+                    <p>Access patient histories, manage records, and track consultation notes easily.</p>
+                    <ul class="service-list">
+                        <li><i class="bi bi-check-circle"></i> Patient database</li>
+                        <li><i class="bi bi-check-circle"></i> Medical history access</li>
+                        <li><i class="bi bi-check-circle"></i> Consultation notes</li>
+                        <li><i class="bi bi-check-circle"></i> Patient search</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="service-card">
+                    <div class="service-icon"><i class="bi bi-bar-chart"></i></div>
+                    <h4>Analytics & Reports</h4>
+                    <p>View detailed analytics about your appointments, earnings, and patient feedback.</p>
+                    <ul class="service-list">
+                        <li><i class="bi bi-check-circle"></i> Appointment analytics</li>
+                        <li><i class="bi bi-check-circle"></i> Earnings tracking</li>
+                        <li><i class="bi bi-check-circle"></i> Patient feedback</li>
+                        <li><i class="bi bi-check-circle"></i> Performance metrics</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Premium Features -->
+<div class="premium-section">
+    <div class="container">
+        <h2 class="premium-title">Premium Features</h2>
+        <div class="premium-card">
+            <h3><i class="bi bi-star"></i> Coming Soon</h3>
+            <p>We're constantly developing new features to enhance your experience:</p>
+            <ul class="premium-list">
+                <li><i class="bi bi-check-circle"></i> Video Consultations</li>
+                <li><i class="bi bi-check-circle"></i> Online Prescriptions</li>
+                <li><i class="bi bi-check-circle"></i> Lab Integration</li>
+                <li><i class="bi bi-check-circle"></i> Telemedicine Support</li>
+                <li><i class="bi bi-check-circle"></i> Mobile App</li>
+                <li><i class="bi bi-check-circle"></i> AI Health Assistant</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Contact Section -->
+<div class="contact-hero">
+    <div class="container">
+        <h2><i class="bi bi-telephone"></i> Contact Us</h2>
+        <p>We're Here to Help - Reach Out to MediBridge Today</p>
+    </div>
+</div>
+
+<div class="contact-section">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="contact-form">
+                    <h3>Send us a Message</h3>
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" placeholder="your@email.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Subject</label>
+                            <select required>
+                                <option value="">Select a Subject</option>
+                                <option value="general">General Inquiry</option>
+                                <option value="support">Support</option>
+                                <option value="feedback">Feedback</option>
+                                <option value="partnership">Partnership</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Message</label>
+                            <textarea placeholder="Tell us how we can help..." required></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn"><i class="bi bi-send"></i> Send Message</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="contact-info">
+                    <h3 style="font-size: 1.5rem; font-weight: 700; color: var(--dark-navy); margin-bottom: 2rem;"><i class="bi bi-info-circle"></i> Get in Touch</h3>
+                    
+                    <div class="contact-item">
+                        <div class="contact-item-icon"><i class="bi bi-telephone"></i></div>
+                        <h4>Phone</h4>
+                        <p>+91 1800-000-000</p>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-item-icon"><i class="bi bi-envelope"></i></div>
+                        <h4>Email</h4>
+                        <p><a href="mailto:support@medibridge.com">support@medibridge.com</a></p>
+                        <p><a href="mailto:info@medibridge.com">info@medibridge.com</a></p>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-item-icon"><i class="bi bi-geo-alt"></i></div>
+                        <h4>Address</h4>
+                        <p>MediBridge Healthcare Solutions<br>Tech Park, Innovation City<br>India 100001</p>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-item-icon"><i class="bi bi-clock"></i></div>
+                        <h4>Business Hours</h4>
+                        <p>Monday - Friday: 9:00 AM - 6:00 PM<br>Saturday: 10:00 AM - 4:00 PM<br>Sunday: Closed</p>
+                    </div>
+
+                    <div style="margin-top: 2rem;">
+                        <h4 style="color: var(--dark-navy); font-weight: 700; margin-bottom: 1.5rem;">Follow Us</h4>
+                        <div class="social-links">
+                            <a href="#" class="social-link"><i class="bi bi-facebook"></i></a>
+                            <a href="#" class="social-link"><i class="bi bi-twitter"></i></a>
+                            <a href="#" class="social-link"><i class="bi bi-linkedin"></i></a>
+                            <a href="#" class="social-link"><i class="bi bi-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- FAQ Section -->
+<div class="faq-section">
+    <div class="container">
+        <h2 class="faq-title"><i class="bi bi-question-circle"></i> Frequently Asked Questions</h2>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span><i class="bi bi-check-circle"></i> How do I create an account?</span>
+                        <span>+</span>
+                    </div>
+                    <div class="faq-answer">Visit our homepage and click on "Register as Patient" or "Register as Doctor". Fill in your details and verify your email to get started immediately.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span><i class="bi bi-check-circle"></i> Can I cancel or reschedule an appointment?</span>
+                        <span>+</span>
+                    </div>
+                    <div class="faq-answer">Yes! You can cancel or reschedule appointments up to 24 hours before the scheduled time. Simply go to "My Appointments" and make changes.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span><i class="bi bi-check-circle"></i> Is my medical data secure?</span>
+                        <span>+</span>
+                    </div>
+                    <div class="faq-answer">Yes! We use industry-standard encryption (SSL/TLS) and comply with healthcare data protection regulations. Your privacy is our priority.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span><i class="bi bi-check-circle"></i> Do doctors on MediBridge have qualifications?</span>
+                        <span>+</span>
+                    </div>
+                    <div class="faq-answer">All doctors are verified professionals with proper medical licenses and qualifications. We verify credentials before approval.</div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span><i class="bi bi-check-circle"></i> How do I book an appointment?</span>
+                        <span>+</span>
+                    </div>
+                    <div class="faq-answer">Log in, search for doctors by specialty or name, check their availability, and select your preferred time slot. Instant confirmation via email.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span><i class="bi bi-check-circle"></i> How can I provide feedback?</span>
+                        <span>+</span>
+                    </div>
+                    <div class="faq-answer">After each appointment, you can rate and review your doctor. We use your feedback to improve our service continuously.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span><i class="bi bi-check-circle"></i> What payment methods do you accept?</span>
+                        <span>+</span>
+                    </div>
+                    <div class="faq-answer">We accept credit cards, debit cards, net banking, UPI, and digital wallets. All transactions are secure and encrypted.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span><i class="bi bi-check-circle"></i> What if I need urgent medical help?</span>
+                        <span>+</span>
+                    </div>
+                    <div class="faq-answer">For emergencies, please call your local emergency number (112 in India) or visit the nearest hospital. MediBridge is for scheduled consultations.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer-section">
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <h5 class="footer-title"><i class="bi bi-hospital"></i> MediBridge</h5>
+                <p style="color: #cbd5e1; font-size: 0.9rem; line-height: 1.6;">Smart healthcare management system connecting patients with trusted healthcare professionals.</p>
+            </div>
+            <div class="col-md-3">
+                <h5 class="footer-title">Quick Links</h5>
+                <a href="#" class="footer-link">About Us</a>
+                <a href="#" class="footer-link">Services</a>
+                <a href="#" class="footer-link">Contact Us</a>
+                <a href="#" class="footer-link">Help & Support</a>
+            </div>
+            <div class="col-md-3">
+                <h5 class="footer-title">Legal</h5>
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <a href="#" class="footer-link">Terms & Conditions</a>
+                <a href="#" class="footer-link">Security</a>
+                <a href="#" class="footer-link">Disclaimer</a>
+            </div>
+            <div class="col-md-3">
+                <h5 class="footer-title">Follow Us</h5>
+                <div class="social-links" style="justify-content: flex-start;">
+                    <a href="#" class="social-link" style="width: 40px; height: 40px; font-size: 1rem;"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="social-link" style="width: 40px; height: 40px; font-size: 1rem;"><i class="bi bi-twitter"></i></a>
+                    <a href="#" class="social-link" style="width: 40px; height: 40px; font-size: 1rem;"><i class="bi bi-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-divider">
+            <p>&copy; 2026 MediBridge. All rights reserved. | Built with care for better healthcare.</p>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // FAQ Toggle
+    document.querySelectorAll('.faq-question').forEach(question => {
+        question.addEventListener('click', () => {
+            const answer = question.nextElementSibling;
+            const isOpen = answer.classList.contains('show');
+            
+            document.querySelectorAll('.faq-answer').forEach(a => a.classList.remove('show'));
+            document.querySelectorAll('.faq-question span:last-child').forEach(span => span.textContent = '+');
+            
+            if (!isOpen) {
+                answer.classList.add('show');
+                question.querySelector('span:last-child').textContent = '−';
+            }
+        });
+    });
+
+    // Contact Form
+    document.getElementById('contactForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        alert('Thank you for reaching out! We will get back to you soon.');
+        e.target.reset();
+    });
+</script>
+
+{% endblock %}

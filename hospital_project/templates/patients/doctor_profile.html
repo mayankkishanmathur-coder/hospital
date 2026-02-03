@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+
+{% block title %}Doctor Profile - MediBridge{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1>Dr. {{ doctor.user.first_name }} {{ doctor.user.last_name }}</h1>
+        <p class="text-white-50">{{ doctor.specialization.name }}</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="card mb-4">
+                {% if doctor.profile_image %}
+                    <img src="{{ doctor.profile_image.url }}" class="card-img-top" alt="Dr. {{ doctor.user.first_name }}">
+                {% else %}
+                    <img src="https://via.placeholder.com/300?text=Dr.+{{ doctor.user.first_name }}" class="card-img-top" alt="Dr. {{ doctor.user.first_name }}">
+                {% endif %}
+                
+                <div class="card-body">
+                    <h5 class="card-title">Dr. {{ doctor.user.first_name }} {{ doctor.user.last_name }}</h5>
+                    <p class="card-text text-muted">{{ doctor.specialization.name }}</p>
+
+                    <div class="mb-3">
+                        {% for i in "12345" %}
+                            {% if i <= doctor.rating %}
+                                <i class="bi bi-star-fill text-warning"></i>
+                            {% elif doctor.rating > i|add:"-1" %}
+                                <i class="bi bi-star-half text-warning"></i>
+                            {% else %}
+                                <i class="bi bi-star text-warning"></i>
+                            {% endif %}
+                        {% endfor %}
+                        <small class="text-muted d-block">({{ doctor.total_ratings }} reviews)</small>
+                    </div>
+
+                    <hr>
+
+                    <p><strong>Experience:</strong> {{ doctor.experience_years }} years</p>
+                    <p><strong>License #:</strong> {{ doctor.license_number }}</p>
+                    <p><strong>Consultation Fee:</strong> ${{ doctor.consultation_fee }}</p>
+                    <p><strong>Status:</strong> 
+                        {% if doctor.availability_status == 'available' %}
+                            <span class="badge bg-success">Available</span>
+                        {% elif doctor.availability_status == 'unavailable' %}
+                            <span class="badge bg-danger">Unavailable</span>
+                        {% else %}
+                            <span class="badge bg-warning">On Break</span>
+                        {% endif %}
+                    </p>
+
+                    <a href="{% url 'book_appointment' %}" class="btn btn-primary w-100">
+                        <i class="bi bi-calendar-plus"></i> Book Appointment
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            {% if doctor.bio %}
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">About</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>{{ doctor.bio }}</p>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if doctor.qualifications %}
+                <div class="card mb-4">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0">Qualifications & Certifications</h5>
+                    </div>
+                    <div class="card-body">
+                        {{ doctor.qualifications|linebreaks }}
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="card mb-4">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Clinic Information</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Clinic Address:</strong></p>
+                    <p>{{ doctor.clinic_address }}</p>
+                    <p><strong>Phone:</strong> {{ doctor.phone }}</p>
+                </div>
+            </div>
+
+            {% if availability %}
+                <div class="card mb-4">
+                    <div class="card-header bg-warning">
+                        <h5 class="mb-0">Working Hours</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Day</th>
+                                    <th>Time</th>
+                                    <th>Slot Duration</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for slot in availability %}
+                                    <tr>
+                                        <td>{{ slot.day_of_week }}</td>
+                                        <td>{{ slot.start_time }} - {{ slot.end_time }}</td>
+                                        <td>{{ slot.slot_duration }} minutes</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="card">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0">Patient Reviews</h5>
+                </div>
+                <div class="card-body">
+                    {% if reviews %}
+                        {% for review in reviews %}
+                            <div class="mb-4 pb-4 border-bottom">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <div>
+                                        {% if review.is_anonymous %}
+                                            <strong>Anonymous Patient</strong>
+                                        {% else %}
+                                            <strong>{{ review.patient.user.first_name }} {{ review.patient.user.last_name }}</strong>
+                                        {% endif %}
+                                    </div>
+                                    <div>
+                                        {% for i in "12345" %}
+                                            {% if i <= review.rating %}
+                                                <i class="bi bi-star-fill text-warning"></i>
+                                            {% else %}
+                                                <i class="bi bi-star text-warning"></i>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% if review.review_text %}
+                                    <p class="text-muted">{{ review.review_text }}</p>
+                                {% endif %}
+                                <small class="text-muted">{{ review.created_at|date:"M d, Y" }}</small>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted">No reviews yet. Be the first to review this doctor!</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block title %}Patient Profile - MediBridge{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1>My Profile</h1>
+        <p class="text-white-50">Manage your personal and medical information</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <form method="post" class="mb-4">
+                {% csrf_token %}
+                
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Personal Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">First Name</label>
+                                <input type="text" class="form-control" value="{{ user.first_name }}" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Last Name</label>
+                                <input type="text" class="form-control" value="{{ user.last_name }}" disabled>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" value="{{ user.email }}" disabled>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" id="phone" name="phone" value="{{ patient.phone }}" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="date_of_birth" class="form-label">Date of Birth</label>
+                                <input type="date" class="form-control" id="date_of_birth" value="{{ patient.date_of_birth }}" disabled>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Address</label>
+                            <textarea class="form-control" id="address" name="address" rows="3" required>{{ patient.address }}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0">Medical Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="blood_type" class="form-label">Blood Type</label>
+                                <select class="form-control" id="blood_type" name="blood_type">
+                                    <option value="">Select Blood Type</option>
+                                    <option value="O+" {% if patient.blood_type == 'O+' %}selected{% endif %}>O+</option>
+                                    <option value="O-" {% if patient.blood_type == 'O-' %}selected{% endif %}>O-</option>
+                                    <option value="A+" {% if patient.blood_type == 'A+' %}selected{% endif %}>A+</option>
+                                    <option value="A-" {% if patient.blood_type == 'A-' %}selected{% endif %}>A-</option>
+                                    <option value="B+" {% if patient.blood_type == 'B+' %}selected{% endif %}>B+</option>
+                                    <option value="B-" {% if patient.blood_type == 'B-' %}selected{% endif %}>B-</option>
+                                    <option value="AB+" {% if patient.blood_type == 'AB+' %}selected{% endif %}>AB+</option>
+                                    <option value="AB-" {% if patient.blood_type == 'AB-' %}selected{% endif %}>AB-</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="emergency_contact" class="form-label">Emergency Contact</label>
+                                <input type="tel" class="form-control" id="emergency_contact" name="emergency_contact" value="{{ patient.emergency_contact }}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">Insurance Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="insurance_status" class="form-label">Insurance Status</label>
+                            <select class="form-control" id="insurance_status" name="insurance_status">
+                                <option value="none" {% if patient.insurance_status == 'none' %}selected{% endif %}>No Insurance</option>
+                                <option value="active" {% if patient.insurance_status == 'active' %}selected{% endif %}>Active</option>
+                                <option value="expired" {% if patient.insurance_status == 'expired' %}selected{% endif %}>Expired</option>
+                            </select>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="insurance_provider" class="form-label">Insurance Provider</label>
+                                <input type="text" class="form-control" id="insurance_provider" name="insurance_provider" value="{{ patient.insurance_provider }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="insurance_id" class="form-label">Policy Number</label>
+                                <input type="text" class="form-control" id="insurance_id" name="insurance_id" value="{{ patient.insurance_id }}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a href="{% url 'patient_dashboard' %}" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-circle"></i> Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

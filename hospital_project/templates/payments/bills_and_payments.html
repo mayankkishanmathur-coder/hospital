@@ -1,0 +1,301 @@
+{% extends 'base.html' %}
+
+{% block title %}Bills & Payments - MediBridge{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1><i class="bi bi-receipt"></i> Bills & Payments</h1>
+        <p class="text-white-50">View and manage all your medical bills</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <!-- Statistics Cards -->
+    <div class="row mb-4 g-3">
+        <div class="col-md-3">
+            <div class="card stat-card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <p class="text-muted mb-1">Total Bills</p>
+                            <h3 class="mb-0">${{ total_amount|floatformat:2 }}</h3>
+                            <small class="text-muted">{{ total_bills }} bills</small>
+                        </div>
+                        <i class="bi bi-receipt" style="font-size: 2rem; color: #0ea5e9;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card stat-card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <p class="text-muted mb-1">Amount Paid</p>
+                            <h3 class="mb-0 text-success">${{ total_paid|floatformat:2 }}</h3>
+                            <small class="text-muted">{{ paid_bills }} paid</small>
+                        </div>
+                        <i class="bi bi-check-circle" style="font-size: 2rem; color: #10b981;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card stat-card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <p class="text-muted mb-1">Amount Due</p>
+                            <h3 class="mb-0 text-warning">${{ total_due|floatformat:2 }}</h3>
+                            <small class="text-muted">{{ unpaid_bills }} unpaid</small>
+                        </div>
+                        <i class="bi bi-exclamation-circle" style="font-size: 2rem; color: #f59e0b;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card stat-card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <p class="text-muted mb-1">Overdue Bills</p>
+                            <h3 class="mb-0 text-danger">{{ overdue_bills }}</h3>
+                            <small class="text-muted">needs attention</small>
+                        </div>
+                        <i class="bi bi-clock-history" style="font-size: 2rem; color: #ef4444;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter Buttons -->
+    <div class="mb-4">
+        <div class="btn-group" role="group">
+            <a href="?status=all" class="btn btn-sm {% if status_filter == 'all' %}btn-primary{% else %}btn-outline-primary{% endif %}">
+                All Bills
+            </a>
+            <a href="?status=unpaid" class="btn btn-sm {% if status_filter == 'unpaid' %}btn-warning{% else %}btn-outline-warning{% endif %}">
+                Unpaid
+            </a>
+            <a href="?status=paid" class="btn btn-sm {% if status_filter == 'paid' %}btn-success{% else %}btn-outline-success{% endif %}">
+                Paid
+            </a>
+            <a href="?status=partial" class="btn btn-sm {% if status_filter == 'partial' %}btn-info{% else %}btn-outline-info{% endif %}">
+                Partial
+            </a>
+            <a href="?status=overdue" class="btn btn-sm {% if status_filter == 'overdue' %}btn-danger{% else %}btn-outline-danger{% endif %}">
+                Overdue
+            </a>
+        </div>
+    </div>
+
+    <!-- Bills Table -->
+    <div class="card">
+        <div class="card-header bg-light">
+            <h5 class="mb-0"><i class="bi bi-list-check"></i> Bill Details</h5>
+        </div>
+        <div class="card-body p-0">
+            {% if bills %}
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Bill ID</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Bill Date</th>
+                                <th>Amount</th>
+                                <th>Paid</th>
+                                <th>Due</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for bill in bills %}
+                                <tr>
+                                    <td>
+                                        <strong>#{{ bill.id }}</strong>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-info">{{ bill.get_bill_type_display }}</span>
+                                    </td>
+                                    <td>
+                                        <small>
+                                            {% if bill.appointment %}
+                                                {{ bill.appointment.patient.user.get_full_name }} - Dr. {{ bill.appointment.doctor.user.first_name }}
+                                            {% else %}
+                                                {{ bill.description|truncatewords:10 }}
+                                            {% endif %}
+                                        </small>
+                                    </td>
+                                    <td>
+                                        <small>{{ bill.bill_date|date:"M d, Y" }}</small>
+                                    </td>
+                                    <td>
+                                        <strong>${{ bill.total_amount|floatformat:2 }}</strong>
+                                    </td>
+                                    <td>
+                                        <small class="text-success">${{ bill.paid_amount|floatformat:2 }}</small>
+                                    </td>
+                                    <td>
+                                        <strong class="{% if bill.remaining_amount > 0 %}text-danger{% else %}text-success{% endif %}">
+                                            ${{ bill.remaining_amount|floatformat:2 }}
+                                        </strong>
+                                    </td>
+                                    <td>
+                                        {% if bill.payment_status == 'paid' %}
+                                            <span class="badge bg-success"><i class="bi bi-check-circle"></i> Paid</span>
+                                        {% elif bill.payment_status == 'unpaid' %}
+                                            <span class="badge bg-warning"><i class="bi bi-exclamation-circle"></i> Unpaid</span>
+                                        {% elif bill.payment_status == 'partial' %}
+                                            <span class="badge bg-info"><i class="bi bi-dash-circle"></i> Partial</span>
+                                        {% elif bill.payment_status == 'overdue' %}
+                                            <span class="badge bg-danger"><i class="bi bi-clock-history"></i> Overdue</span>
+                                        {% elif bill.payment_status == 'cancelled' %}
+                                            <span class="badge bg-secondary"><i class="bi bi-x-circle"></i> Cancelled</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if bill.remaining_amount > 0 %}
+                                            <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#paymentModal" onclick="setBillDetails({{ bill.id }}, {{ bill.remaining_amount }})">
+                                                <i class="bi bi-credit-card"></i> Pay
+                                            </button>
+                                        {% else %}
+                                            <span class="badge bg-success">Completed</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="empty-state p-5 text-center">
+                    <i class="bi bi-inbox" style="font-size: 3rem; color: #cbd5e1; margin-bottom: 1rem;"></i>
+                    <h4>No Bills Found</h4>
+                    <p class="text-muted">You don't have any bills at this moment.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Payment Information -->
+    <div class="row mt-5">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0"><i class="bi bi-info-circle"></i> Payment Information</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>How to Pay:</strong></p>
+                    <ul>
+                        <li>Click the "Pay" button next to any unpaid bill</li>
+                        <li>Select your preferred payment method</li>
+                        <li>Complete the secure payment process</li>
+                        <li>Receive instant confirmation and receipt</li>
+                    </ul>
+                    
+                    <hr>
+                    
+                    <p><strong>Payment Methods:</strong></p>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul>
+                                <li>Credit Card</li>
+                                <li>Debit Card</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul>
+                                <li>Bank Transfer</li>
+                                <li>Digital Wallet</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0"><i class="bi bi-question-circle"></i> Need Help?</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Payment Support:</strong></p>
+                    <p>For any billing inquiries or payment issues, please contact us:</p>
+                    <ul>
+                        <li><i class="bi bi-telephone"></i> +1-800-HOSPITAL</li>
+                        <li><i class="bi bi-envelope"></i> billing@medibridge.com</li>
+                        <li><i class="bi bi-clock"></i> Available 24/7</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Payment Modal -->
+<div class="modal fade" id="paymentModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Make Payment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Bill Amount:</strong> $<span id="billAmount">0.00</span></p>
+                <p class="text-muted">Select a payment method to proceed with payment.</p>
+                <div class="d-grid gap-2">
+                    <button class="btn btn-primary btn-lg">
+                        <i class="bi bi-credit-card"></i> Pay with Card
+                    </button>
+                    <button class="btn btn-outline-primary btn-lg">
+                        <i class="bi bi-bank"></i> Bank Transfer
+                    </button>
+                    <button class="btn btn-outline-primary btn-lg">
+                        <i class="bi bi-wallet2"></i> Digital Wallet
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .stat-card {
+        border: none;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        border-radius: 12px;
+        transition: all 0.3s ease;
+    }
+    
+    .stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    }
+    
+    .stat-card h3 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: #0f172a;
+    }
+    
+    .table-hover tbody tr:hover {
+        background-color: #f8fafc;
+    }
+</style>
+
+<script>
+    function setBillDetails(billId, amount) {
+        document.getElementById('billAmount').textContent = amount.toFixed(2);
+    }
+</script>
+{% endblock %}

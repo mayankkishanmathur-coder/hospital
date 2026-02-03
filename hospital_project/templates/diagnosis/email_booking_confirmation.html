@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Arial, sans-serif; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9; }
+        .header { background-color: #28a745; color: white; padding: 20px; border-radius: 5px 5px 0 0; }
+        .content { background-color: white; padding: 20px; border: 1px solid #ddd; border-top: none; }
+        .footer { background-color: #f0f0f0; padding: 15px; text-align: center; font-size: 12px; border: 1px solid #ddd; border-top: none; border-radius: 0 0 5px 5px; }
+        .info-box { background-color: #f8f9fa; padding: 15px; margin: 15px 0; border-left: 4px solid #28a745; border-radius: 4px; }
+        .alert-success { background-color: #d4edda; border: 1px solid #28a745; color: #155724; padding: 12px; margin: 15px 0; border-radius: 4px; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        table td { padding: 8px; border-bottom: 1px solid #ddd; }
+        table .label { font-weight: bold; color: #28a745; }
+        .button { display: inline-block; background-color: #28a745; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>✓ Appointment Confirmed!</h2>
+        </div>
+        
+        <div class="content">
+            <p>Hello <strong>{{ patient_name }}</strong>,</p>
+            
+            <p>Your appointment has been successfully confirmed. Here are the details:</p>
+            
+            <table>
+                <tr>
+                    <td class="label">Doctor</td>
+                    <td>{{ doctor_name }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Specialization</td>
+                    <td>{{ doctor_specialization }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Date</td>
+                    <td>{{ appointment_date|date:"F d, Y" }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Time</td>
+                    <td>{{ appointment_time|time:"g:i A" }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Reason</td>
+                    <td>{{ diagnosis_condition }}</td>
+                </tr>
+            </table>
+            
+            <div class="alert-success">
+                <strong>✓ Success!</strong> Your appointment is confirmed. Please arrive 10-15 minutes before your scheduled appointment time.
+            </div>
+            
+            <div class="info-box">
+                <h4>Important Notes</h4>
+                <ul>
+                    <li>Bring any relevant medical documents</li>
+                    <li>If you need to reschedule, please do so at least 24 hours in advance</li>
+                    <li>For any questions, contact the hospital helpline</li>
+                </ul>
+            </div>
+            
+            <p style="margin-top: 20px; color: #666; font-size: 12px;">
+                If you need to make changes to your appointment, please visit your patient dashboard or contact our support team.
+            </p>
+        </div>
+        
+        <div class="footer">
+            <p>Hospital Management System</p>
+            <p>© 2026 All Rights Reserved</p>
+        </div>
+    </div>
+</body>
+</html>

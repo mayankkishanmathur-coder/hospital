@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+
+{% block title %}Diagnosis Results{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1>Your Diagnosis Results</h1>
+        <p class="text-white-50">Based on your reported symptoms</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <!-- Results Summary -->
+        <div class="col-lg-8 mx-auto mb-4">
+            <div class="card border-success shadow-lg">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0">
+                        <i class="bi bi-check-circle"></i> Analysis Complete
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="text-center p-3 bg-light rounded">
+                                <h6 class="text-muted">Predicted Condition</h6>
+                                <h3 class="text-primary">{{ predicted_condition }}</h3>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="text-center p-3 bg-light rounded">
+                                <h6 class="text-muted">Recommended Specialization</h6>
+                                <h3 class="text-success">
+                                    {{ predicted_specialization.name|default:"General" }}
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h6 class="text-muted">Confidence Score</h6>
+                        <div class="progress" style="height: 25px;">
+                            <div class="progress-bar bg-success" role="progressbar" 
+                                 style="width: 75%; min-width: 60px;" 
+                                 aria-valuenow="{{ confidence_score }}" aria-valuemin="0" aria-valuemax="100">
+                                {{ confidence_score }}%
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h6 class="text-muted">Your Reported Symptoms</h6>
+                        <div class="symptom-tags">
+                            {% for symptom in symptoms %}
+                                <span class="badge bg-info me-2 mb-2">{{ symptom.name }}</span>
+                            {% empty %}
+                                <p class="text-muted">No symptoms selected</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Recommended Doctors -->
+    <div class="row mt-4">
+        <div class="col-lg-10 mx-auto">
+            <h3 class="mb-4">
+                <i class="bi bi-person-check"></i> Recommended Doctors
+            </h3>
+            
+            {% if recommended_doctors %}
+                <div class="row">
+                    {% for doctor in recommended_doctors %}
+                        <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="card h-100 doctor-recommendation-card">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-start mb-3">
+                                        {% if doctor.profile_image %}
+                                            <img src="{{ doctor.profile_image.url }}" 
+                                                 alt="{{ doctor.user.get_full_name }}" 
+                                                 class="rounded-circle me-3" width="60" height="60">
+                                        {% else %}
+                                            <div class="rounded-circle me-3 bg-primary text-white d-flex align-items-center justify-content-center" 
+                                                 style="width: 60px; height: 60px; font-size: 24px;">
+                                                <i class="bi bi-person"></i>
+                                            </div>
+                                        {% endif %}
+                                        <div>
+                                            <h5 class="card-title mb-0">
+                                                Dr. {{ doctor.user.first_name }} {{ doctor.user.last_name }}
+                                            </h5>
+                                            <small class="text-muted">{{ doctor.specialization.name }}</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <p class="card-text">
+                                        <strong>Experience:</strong> {{ doctor.experience_years }} years<br>
+                                        <strong>Consultation Fee:</strong> Rs. {{ doctor.consultation_fee }}<br>
+                                        <strong>Location:</strong> {{ doctor.clinic_address|truncatewords:5 }}
+                                    </p>
+                                    
+                                    {% if doctor.bio %}
+                                        <p class="card-text small text-muted">
+                                            {{ doctor.bio|truncatewords:20 }}
+                                        </p>
+                                    {% endif %}
+                                </div>
+                                <div class="card-footer bg-white border-top">
+                                    <a href="{% url 'book_from_diagnosis' diagnosis_record.id doctor.id %}" 
+                                       class="btn btn-primary btn-sm w-100">
+                                        <i class="bi bi-calendar-check"></i> Book Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-warning" role="alert">
+                    <i class="bi bi-exclamation-triangle"></i> 
+                    No doctors available for the recommended specialization. 
+                    Please contact support or try again later.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Action Buttons -->
+    <div class="row mt-4 mb-5">
+        <div class="col-lg-10 mx-auto">
+            <div class="d-grid gap-2 d-md-flex justify-content-md-between">
+                <a href="{% url 'diagnosis_index' %}" class="btn btn-outline-primary btn-lg">
+                    <i class="bi bi-arrow-left"></i> New Diagnosis
+                </a>
+                <a href="{% url 'patient_dashboard' %}" class="btn btn-outline-secondary btn-lg">
+                    <i class="bi bi-house"></i> Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Disclaimer -->
+    <div class="row">
+        <div class="col-lg-10 mx-auto mb-4">
+            <div class="alert alert-info border-info">
+                <h6 class="alert-heading">
+                    <i class="bi bi-info-circle"></i> Important Disclaimer
+                </h6>
+                <p class="mb-0">
+                    This diagnosis is generated by an AI system and is for informational purposes only. 
+                    It is NOT a substitute for professional medical advice, diagnosis, or treatment. 
+                    Always consult with a qualified healthcare professional before making any health decisions. 
+                    In case of emergency, please call emergency services immediately.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

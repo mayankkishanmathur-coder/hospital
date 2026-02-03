@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Medical Notes - MediBridge{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1>Add Medical Notes & Prescription</h1>
+        <p class="text-white-50">Document appointment details for patient records</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Patient: {{ appointment.patient.user.first_name }} {{ appointment.patient.user.last_name }}</h4>
+                </div>
+                <div class="card-body">
+                    <p><strong>Appointment Date:</strong> {{ appointment.appointment_date }} at {{ appointment.appointment_time }}</p>
+                    <p><strong>Reason:</strong> {{ appointment.reason }}</p>
+                </div>
+            </div>
+
+            <form method="post" class="mt-4">
+                {% csrf_token %}
+                
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="bi bi-stethoscope"></i> Clinical Assessment</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="diagnosis" class="form-label">Diagnosis</label>
+                            <textarea class="form-control" id="diagnosis" name="diagnosis" rows="3" required placeholder="Enter diagnosis details..."></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="clinical_notes" class="form-label">Clinical Notes</label>
+                            <textarea class="form-control" id="clinical_notes" name="clinical_notes" rows="4" required placeholder="Document your clinical observations..."></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="allergies" class="form-label">Patient Allergies (if any)</label>
+                            <input type="text" class="form-control" id="allergies" name="allergies" placeholder="List known allergies...">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="bi bi-pill"></i> Prescription & Treatment</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="prescription" class="form-label">Prescription & Medications</label>
+                            <textarea class="form-control" id="prescription" name="prescription" rows="4" required placeholder="List medications, dosages, and instructions...">
+
+Example format:
+1. Medicine Name - Dosage - Frequency - Duration
+2. Medicine Name - Dosage - Frequency - Duration
+
+Instructions:
+- Take with food
+- Avoid dairy products
+- Complete full course</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="bi bi-calendar-check"></i> Follow-up Requirements</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="follow_up_required" name="follow_up_required" value="on">
+                            <label class="form-check-label" for="follow_up_required">
+                                Follow-up appointment required
+                            </label>
+                        </div>
+
+                        <div class="mb-3" id="follow-up-days" style="display: none;">
+                            <label for="follow_up_days" class="form-label">Schedule Follow-up After (Days)</label>
+                            <input type="number" class="form-control" id="follow_up_days" name="follow_up_days" value="7" min="1">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a href="{% url 'doctor_dashboard' %}" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-check-circle"></i> Complete Appointment & Save Notes
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">Patient Information</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Name:</strong> {{ appointment.patient.user.first_name }} {{ appointment.patient.user.last_name }}</p>
+                    <p><strong>Email:</strong> {{ appointment.patient.user.email }}</p>
+                    <p><strong>Phone:</strong> {{ appointment.patient.phone }}</p>
+                    <p><strong>DOB:</strong> {{ appointment.patient.date_of_birth }}</p>
+                    {% if appointment.patient.blood_type %}
+                        <p><strong>Blood Type:</strong> {{ appointment.patient.blood_type }}</p>
+                    {% endif %}
+                    {% if appointment.patient.insurance_status != 'none' %}
+                        <p><strong>Insurance:</strong> {{ appointment.patient.insurance_provider }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('follow_up_required').addEventListener('change', function() {
+        const followUpDays = document.getElementById('follow-up-days');
+        followUpDays.style.display = this.checked ? 'block' : 'none';
+    });
+</script>
+{% endblock %}

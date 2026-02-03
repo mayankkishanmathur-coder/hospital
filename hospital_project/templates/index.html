@@ -1,0 +1,354 @@
+{% extends 'base.html' %}
+
+{% block title %}MediBridge - Smart Healthcare Management{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-12 hero-content mb-4">
+                <h1 class="hero-title">Welcome to MediBridge</h1>
+                <p class="hero-subtitle">
+                    Your trusted healthcare management platform connecting patients with expert healthcare professionals
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Core Values Section -->
+<div class="values-section">
+    <div class="container">
+        <h2 class="values-title">Our Core Values</h2>
+        
+        <div class="row">
+            <!-- Patient Care -->
+            <div class="col-md-6 col-lg-4">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="bi bi-heart-fill"></i>
+                    </div>
+                    <h4 class="value-title">Patient Care</h4>
+                    <p class="value-description">
+                        We put patient wellbeing at the center of everything we do, ensuring every feature is designed with patient needs in mind.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Trust & Security -->
+            <div class="col-md-6 col-lg-4">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="bi bi-shield-check"></i>
+                    </div>
+                    <h4 class="value-title">Trust & Security</h4>
+                    <p class="value-description">
+                        We maintain the highest standards of data security and privacy to protect sensitive healthcare information.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Innovation -->
+            <div class="col-md-6 col-lg-4">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="bi bi-arrow-repeat"></i>
+                    </div>
+                    <h4 class="value-title">Innovation</h4>
+                    <p class="value-description">
+                        We continuously improve and innovate to provide cutting-edge healthcare technology solutions.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Collaboration -->
+            <div class="col-md-6 col-lg-4">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+                    <h4 class="value-title">Collaboration</h4>
+                    <p class="value-description">
+                        We foster seamless collaboration between patients and healthcare providers for better health outcomes.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Excellence -->
+            <div class="col-md-6 col-lg-4">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="bi bi-lightning-fill"></i>
+                    </div>
+                    <h4 class="value-title">Excellence</h4>
+                    <p class="value-description">
+                        We strive for excellence in every aspect of our service, from user experience to healthcare delivery.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Accessibility -->
+            <div class="col-md-6 col-lg-4">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="bi bi-globe"></i>
+                    </div>
+                    <h4 class="value-title">Accessibility</h4>
+                    <p class="value-description">
+                        We make quality healthcare accessible to everyone, anytime and anywhere through our platform.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Authentication Section -->
+{% if not user.is_authenticated %}
+<div class="auth-section">
+    <div class="container">
+        <div class="row g-4">
+            <!-- Patient Card -->
+            <div class="col-lg-6">
+                <div class="auth-card">
+                    <div class="auth-card-icon">
+                        <i class="bi bi-person-hearts"></i>
+                    </div>
+                    <h3>For Patients</h3>
+                    <p>Book appointments with expert doctors, manage your health records, and track your medical journey.</p>
+                    <div class="auth-btn-group">
+                        <a href="{% url 'patient_login' %}" class="btn-auth-primary">
+                            <i class="bi bi-box-arrow-in-right"></i> Login
+                        </a>
+                        <a href="{% url 'patient_register' %}" class="btn-auth-secondary">
+                            <i class="bi bi-person-plus"></i> Register
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Doctor Card -->
+            <div class="col-lg-6">
+                <div class="auth-card">
+                    <div class="auth-card-icon">
+                        <i class="bi bi-stethoscope"></i>
+                    </div>
+                    <h3>For Doctors</h3>
+                    <p>Manage your schedule, connect with patients, and provide quality healthcare services online.</p>
+                    <div class="auth-btn-group">
+                        <a href="{% url 'doctor_login' %}" class="btn-auth-primary">
+                            <i class="bi bi-box-arrow-in-right"></i> Login
+                        </a>
+                        <a href="{% url 'doctor_register' %}" class="btn-auth-secondary">
+                            <i class="bi bi-person-plus"></i> Register
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+    {% if user.patient %}
+        <div class="auth-section" style="text-align: center; padding: 3rem 0;">
+            <div class="container">
+                <h2 style="color: var(--dark-navy); margin-bottom: 2rem;">Welcome back, {{ user.first_name|default:user.username }}!</h2>
+                <a href="{% url 'patient_dashboard' %}" class="btn-auth-primary" style="display: inline-block; padding: 1rem 2.5rem;">
+                    <i class="bi bi-speedometer2"></i> Go to Dashboard
+                </a>
+            </div>
+        </div>
+    {% elif user.doctor %}
+        <div class="auth-section" style="text-align: center; padding: 3rem 0;">
+            <div class="container">
+                <h2 style="color: var(--dark-navy); margin-bottom: 2rem;">Welcome back, Dr. {{ user.first_name|default:user.username }}!</h2>
+                <a href="{% url 'doctor_dashboard' %}" class="btn-auth-primary" style="display: inline-block; padding: 1rem 2.5rem;">
+                    <i class="bi bi-speedometer2"></i> Go to Dashboard
+                </a>
+            </div>
+        </div>
+    {% endif %}
+{% endif %}
+
+<!-- Why MediBridge Section -->
+<div style="background: white; padding: 5rem 0; margin-top: 2rem;">
+    <div class="container">
+        <h2 style="font-size: 2.5rem; font-weight: 800; color: #1a3a52; text-align: center; margin-bottom: 3rem;">Why Choose MediBridge?</h2>
+        
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div style="text-align: center; padding: 2rem;">
+                    <div style="font-size: 3rem; color: #0ea5e9; margin-bottom: 1rem;"><i class="bi bi-lightning-charge"></i></div>
+                    <h4 style="font-weight: 700; color: #1a3a52; margin-bottom: 1rem;">Fast & Easy</h4>
+                    <p style="color: #64748b;">Book appointments in minutes without long waiting times or phone calls.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div style="text-align: center; padding: 2rem;">
+                    <div style="font-size: 3rem; color: #10b981; margin-bottom: 1rem;"><i class="bi bi-shield-check"></i></div>
+                    <h4 style="font-weight: 700; color: #1a3a52; margin-bottom: 1rem;">Secure & Safe</h4>
+                    <p style="color: #64748b;">Your medical data is protected with enterprise-grade encryption and privacy compliance.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div style="text-align: center; padding: 2rem;">
+                    <div style="font-size: 3rem; color: #f59e0b; margin-bottom: 1rem;"><i class="bi bi-people-fill"></i></div>
+                    <h4 style="font-weight: 700; color: #1a3a52; margin-bottom: 1rem;">Expert Doctors</h4>
+                    <p style="color: #64748b;">Connect with verified medical professionals across various specializations.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div style="text-align: center; padding: 2rem;">
+                    <div style="font-size: 3rem; color: #8b5cf6; margin-bottom: 1rem;"><i class="bi bi-headset"></i></div>
+                    <h4 style="font-weight: 700; color: #1a3a52; margin-bottom: 1rem;">24/7 Support</h4>
+                    <p style="color: #64748b;">Our customer support team is available round the clock to help you.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Stats Section -->
+<div style="background: linear-gradient(135deg, #1a3a52 0%, #2c5aa0 100%); color: white; padding: 4rem 0;">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-3 mb-4 mb-md-0">
+                <div>
+                    <h3 style="font-size: 3rem; font-weight: 800; margin-bottom: 0.5rem;">500+</h3>
+                    <p style="font-size: 1.1rem; opacity: 0.9;">Registered Doctors</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4 mb-md-0">
+                <div>
+                    <h3 style="font-size: 3rem; font-weight: 800; margin-bottom: 0.5rem;">10K+</h3>
+                    <p style="font-size: 1.1rem; opacity: 0.9;">Active Patients</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4 mb-md-0">
+                <div>
+                    <h3 style="font-size: 3rem; font-weight: 800; margin-bottom: 0.5rem;">50K+</h3>
+                    <p style="font-size: 1.1rem; opacity: 0.9;">Successful Appointments</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div>
+                    <h3 style="font-size: 3rem; font-weight: 800; margin-bottom: 0.5rem;">98%</h3>
+                    <p style="font-size: 1.1rem; opacity: 0.9;">Patient Satisfaction</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Blog Section -->
+<div style="background: #f8fafc; padding: 5rem 0;">
+    <div class="container">
+        <h2 style="font-size: 2.5rem; font-weight: 800; color: #1a3a52; text-align: center; margin-bottom: 3rem;">Latest Health Tips & Articles</h2>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06); transition: all 0.3s ease; cursor: pointer; height: 100%;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 24px rgba(0,0,0,0.12)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0,0,0,0.06)';">
+                    <div style="background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); color: white; padding: 2rem; text-align: center;">
+                        <div style="font-size: 3rem; margin-bottom: 0.5rem;"><i class="bi bi-heart-pulse"></i></div>
+                        <h5 style="font-weight: 700; margin-bottom: 0; color: white;">Healthy Lifestyle Tips</h5>
+                    </div>
+                    <div style="padding: 1.5rem;">
+                        <p style="color: #64748b;">Learn how to maintain a healthy lifestyle with expert advice from healthcare professionals. Stay fit, stay healthy!</p>
+                        <a href="#" style="color: #0ea5e9; text-decoration: none; font-weight: 600;">Read More →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06); transition: all 0.3s ease; cursor: pointer; height: 100%;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 24px rgba(0,0,0,0.12)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0,0,0,0.06)';">
+                    <div style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 2rem; text-align: center;">
+                        <div style="font-size: 3rem; margin-bottom: 0.5rem;"><i class="bi bi-person-check"></i></div>
+                        <h5 style="font-weight: 700; margin-bottom: 0; color: white;">Nutrition Guide</h5>
+                    </div>
+                    <div style="padding: 1.5rem;">
+                        <p style="color: #64748b;">Understand proper nutrition and dietary habits for optimal health. Discover foods that boost your immunity and wellness.</p>
+                        <a href="#" style="color: #10b981; text-decoration: none; font-weight: 600;">Read More →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06); transition: all 0.3s ease; cursor: pointer; height: 100%;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 24px rgba(0,0,0,0.12)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0,0,0,0.06)';">
+                    <div style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; padding: 2rem; text-align: center;">
+                        <div style="font-size: 3rem; margin-bottom: 0.5rem;"><i class="bi bi-capsule"></i></div>
+                        <h5 style="font-weight: 700; margin-bottom: 0; color: white;">Common Diseases</h5>
+                    </div>
+                    <div style="padding: 1.5rem;">
+                        <p style="color: #64748b;">Learn about common diseases, their symptoms, prevention methods, and when to seek medical attention.</p>
+                        <a href="#" style="color: #f59e0b; text-decoration: none; font-weight: 600;">Read More →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CTA Section -->
+<div class="homepage-inline-cta" style="background: linear-gradient(135deg, #1a3a52 0%, #2c5aa0 100%); color: white; padding: 5rem 0; text-align: center;">
+    <div class="container">
+        <h2 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem;">Ready to Get Started?</h2>
+        <p style="font-size: 1.2rem; opacity: 0.95; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">Join thousands of patients and doctors who trust MediBridge for their healthcare needs.</p>
+        
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <a href="{% url 'patient_login' %}" class="btn btn-light" style="padding: 0.8rem 2rem; font-weight: 600; color: #1a3a52;">
+                <i class="bi bi-person-fill"></i> Patient Login
+            </a>
+            <a href="{% url 'doctor_login' %}" class="btn" style="background: white; color: #1a3a52; padding: 0.8rem 2rem; font-weight: 600; border: none;">
+                <i class="bi bi-stethoscope"></i> Doctor Login
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer-section">
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-md-3 mb-4">
+                <h5 class="footer-title"><i class="bi bi-hospital"></i> MediBridge</h5>
+                <p style="color: #cbd5e1; line-height: 1.6; font-size: 0.9rem;">
+                    Smart healthcare management system connecting patients with trusted healthcare professionals.
+                </p>
+            </div>
+            
+            <div class="col-md-3 mb-4">
+                <h5 class="footer-title">Quick Links</h5>
+                <a href="#" class="footer-link">About Us</a>
+                <a href="#" class="footer-link">Services</a>
+                <a href="#" class="footer-link">Contact Us</a>
+                <a href="#" class="footer-link">Help & Support</a>
+            </div>
+            
+            <div class="col-md-3 mb-4">
+                <h5 class="footer-title">Legal</h5>
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <a href="#" class="footer-link">Terms & Conditions</a>
+                <a href="#" class="footer-link">Security</a>
+                <a href="#" class="footer-link">Disclaimer</a>
+            </div>
+            
+            <div class="col-md-3 mb-4">
+                <h5 class="footer-title">Contact</h5>
+                <div class="footer-contact" style="font-size: 0.9rem;">
+                    <i class="bi bi-envelope"></i> support@medibridge.com
+                </div>
+                <div class="footer-contact" style="font-size: 0.9rem;">
+                    <i class="bi bi-telephone"></i> +1 (800) 123-4567
+                </div>
+                <div class="footer-contact" style="font-size: 0.9rem;">
+                    <i class="bi bi-geo-alt"></i> 123 Healthcare Ave, Medical City
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-divider">
+            <p>&copy; 2026 MediBridge. All rights reserved. | Built with care for better healthcare.</p>
+        </div>
+    </div>
+</footer>
+
+{% endblock %}

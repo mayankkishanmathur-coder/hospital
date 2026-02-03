@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+
+{% block title %}Self-Diagnosis Portal{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1>Self-Diagnosis Portal</h1>
+        <p class="text-white-50">Select your symptoms to get personalized doctor recommendations</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card shadow-lg">
+                <div class="card-body p-5">
+                    <h3 class="card-title mb-4">
+                        <i class="bi bi-search-heart"></i> Describe Your Symptoms
+                    </h3>
+                    
+                    <form method="post" id="diagnosisForm">
+                        {% csrf_token %}
+                        
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                <strong>Error:</strong>
+                                {% for error in form.non_field_errors %}
+                                    <p>{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        
+                        <!-- Render all form fields grouped by category -->
+                        <div class="row">
+                            {% for category_name, category_symptoms in categories.items %}
+                                <div class="col-md-6 mb-4">
+                                    <div class="card bg-light">
+                                        <div class="card-header bg-primary text-white">
+                                            <h6 class="mb-0">{{ category_name }}</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            {% for symptom in category_symptoms %}
+                                                <div class="mb-3">
+                                                    <!-- Symptom name with badges -->
+                                                    <div class="mb-2">
+                                                        <strong class="d-block">{{ symptom.name }}</strong>
+                                                        {% if symptom.is_urgent %}
+                                                            <span class="badge bg-danger">URGENT</span>
+                                                        {% endif %}
+                                                        {% if symptom.severity %}
+                                                            <span class="badge bg-{% if symptom.severity == 'mild' %}info{% elif symptom.severity == 'moderate' %}warning{% else %}danger{% endif %}">
+                                                                {{ symptom.get_severity_display|upper }}
+                                                            </span>
+                                                        {% endif %}
+                                                    </div>
+                                                    
+                                                    <!-- Form field for this symptom -->
+                                                    {% with field_name='symptom_'|add:symptom.id %}
+                                                        {{ form|safe }}
+                                                    {% endwith %}
+                                                    
+                                                    <!-- Description -->
+                                                    {% if symptom.description %}
+                                                        <small class="text-muted d-block mt-1">{{ symptom.description }}</small>
+                                                    {% endif %}
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        
+                        <!-- Actually render the form fields here -->
+                        <div style="display: none;">
+                            {% for field in form %}
+                                {{ field }}
+                            {% endfor %}
+                        </div>
+                        
+                        <!-- Action buttons -->
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <a href="{% url 'patient_dashboard' %}" class="btn btn-outline-secondary btn-lg">
+                                <i class="bi bi-arrow-left"></i> Back
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-check-circle"></i> Analyze Symptoms
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Information Card -->
+            <div class="card mt-4 border-info">
+                <div class="card-body">
+                    <h5 class="card-title text-info">
+                        <i class="bi bi-info-circle"></i> Important Disclaimer
+                    </h5>
+                    <p class="card-text mb-0">
+                        This self-diagnosis tool is for <strong>informational purposes only</strong> and should not be used as a substitute for professional medical advice.
+                        Always consult with a qualified healthcare professional for proper diagnosis and treatment.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card-header {
+        border-bottom: 2px solid #e0e0e0;
+    }
+    
+    .badge {
+        margin-right: 5px;
+    }
+    
+    .form-check {
+        margin-bottom: 8px;
+    }
+    
+    .form-check-input {
+        margin-top: 3px;
+    }
+</style>
+{% endblock %}

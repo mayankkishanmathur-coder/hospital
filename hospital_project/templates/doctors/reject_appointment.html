@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}Reject Appointment{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1>Reject Appointment</h1>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="mb-0">Appointment Details</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <strong>Patient Name:</strong>
+                            <p>{{ appointment.patient.user.first_name }} {{ appointment.patient.user.last_name }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Contact:</strong>
+                            <p>{{ appointment.patient.phone }}</p>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <strong>Appointment Date:</strong>
+                            <p>{{ appointment.appointment_date }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Appointment Time:</strong>
+                            <p>{{ appointment.appointment_time }}</p>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Reason for Visit:</strong>
+                        <p>{{ appointment.reason }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert alert-warning">
+                <strong>Note:</strong> When you reject this appointment, it will be automatically reassigned to another available doctor with the same specialization. The patient will be notified of the change.
+            </div>
+
+            <div class="card">
+                <div class="card-body p-5">
+                    <h5 class="card-title mb-4">Reject This Appointment</h5>
+
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            <label for="{{ form.rejection_reason.id_for_label }}" class="form-label">Reason for Rejection *</label>
+                            {{ form.rejection_reason }}
+                            {% if form.rejection_reason.errors %}
+                                <div class="invalid-feedback d-block">{{ form.rejection_reason.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{% url 'doctor_dashboard' %}" class="btn btn-outline-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-danger">Reject Appointment</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

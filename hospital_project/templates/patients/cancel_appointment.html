@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}Cancel Appointment - MediBridge{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1>Cancel Appointment</h1>
+        <p class="text-white-50">Request to cancel your appointment</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-6 mx-auto">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Appointment Details</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Doctor:</strong><br>
+                    Dr. {{ appointment.doctor.user.first_name }} {{ appointment.doctor.user.last_name }}</p>
+                    
+                    <p><strong>Specialization:</strong><br>
+                    {{ appointment.doctor.specialization }}</p>
+
+                    <p><strong>Date & Time:</strong><br>
+                    {{ appointment.appointment_date }} at {{ appointment.appointment_time }}</p>
+
+                    <p><strong>Status:</strong><br>
+                    <span class="badge bg-{{ appointment.status }}">{{ appointment.get_status_display }}</span></p>
+                </div>
+            </div>
+
+            <form method="post" class="card">
+                {% csrf_token %}
+
+                <div class="card-header bg-danger text-white">
+                    <h5 class="mb-0">Cancel Appointment</h5>
+                </div>
+
+                <div class="card-body">
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle"></i>
+                        <strong>Are you sure?</strong> This action cannot be undone. You will lose this appointment slot.
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="reason" class="form-label">Reason for Cancellation (Optional)</label>
+                        <textarea class="form-control" id="reason" name="reason" rows="3" placeholder="Help us improve by sharing your reason..."></textarea>
+                    </div>
+
+                    {% if appointment.status == 'pending' or appointment.status == 'approved' %}
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle"></i>
+                            After cancellation, we can suggest alternative appointment slots with other doctors or the same doctor at different times.
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="card-footer d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a href="{% url 'patient_dashboard' %}" class="btn btn-secondary">Keep Appointment</a>
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-trash"></i> Cancel Appointment
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

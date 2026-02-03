@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block title %}View Prescription - MediBridge{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1>Prescription & Clinical Notes</h1>
+        <p class="text-white-50">{{ note.appointment.appointment_date }}</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Appointment Information</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <p><strong>Doctor:</strong></p>
+                            <p>Dr. {{ note.doctor.user.first_name }} {{ note.doctor.user.last_name }}</p>
+                            <p class="text-muted">{{ note.doctor.specialization }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Date & Time:</strong></p>
+                            <p>{{ note.appointment.appointment_date }}</p>
+                            <p>{{ note.appointment.appointment_time }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header bg-info text-white">
+                    <h4 class="mb-0">Clinical Notes</h4>
+                </div>
+                <div class="card-body">
+                    <p>{{ note.clinical_notes|linebreaks }}</p>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0">Prescription & Medications</h4>
+                </div>
+                <div class="card-body">
+                    <p>{{ note.prescription|linebreaks }}</p>
+                </div>
+            </div>
+
+            {% if note.follow_up_required %}
+                <div class="card mb-4">
+                    <div class="card-header bg-warning">
+                        <h4 class="mb-0">Follow-up Appointment</h4>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Suggested Date:</strong> {{ note.get_follow_up_date }}</p>
+                        <a href="{% url 'book_appointment' %}" class="btn btn-primary">
+                            <i class="bi bi-calendar-plus"></i> Schedule Follow-up
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if note.attachments %}
+                <div class="card mb-4">
+                    <div class="card-header bg-secondary text-white">
+                        <h4 class="mb-0">Attachments</h4>
+                    </div>
+                    <div class="card-body">
+                        <a href="{{ note.attachments.url }}" class="btn btn-outline-secondary" download>
+                            <i class="bi bi-download"></i> Download File
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Important Notes</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li><i class="bi bi-exclamation-triangle text-warning"></i> Follow medication instructions carefully</li>
+                        <li><i class="bi bi-exclamation-triangle text-warning"></i> Report any adverse effects immediately</li>
+                        <li><i class="bi bi-exclamation-triangle text-warning"></i> Complete the full course of medication</li>
+                        <li><i class="bi bi-exclamation-triangle text-warning"></i> Schedule follow-up as recommended</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card mt-3">
+                <div class="card-body text-center">
+                    <p class="mb-3">Need help? Contact our support team:</p>
+                    <p><strong>Email:</strong> support@medibridge.com</p>
+                    <p><strong>Phone:</strong> 1-800-MEDI-BRIDGE</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

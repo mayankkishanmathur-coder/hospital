@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+
+{% block title %}Self-Diagnosis Portal{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1>Self-Diagnosis Portal</h1>
+        <p class="text-white-50">Select your symptoms to get personalized doctor recommendations</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-10 mx-auto">
+            <div class="card shadow-lg">
+                <div class="card-body p-5">
+                    <h3 class="card-title mb-4">
+                        <i class="bi bi-search-heart"></i> Describe Your Symptoms
+                    </h3>
+                    
+                    <form method="post" id="diagnosisForm">
+                        {% csrf_token %}
+                        
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                {% for error in form.non_field_errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        
+                        <!-- Severe and Common Symptoms Section -->
+                        <div class="mb-5">
+                            <h5 class="text-danger mb-3">
+                                <i class="bi bi-exclamation-circle"></i> Critical & Common Symptoms
+                            </h5>
+                            <p class="text-muted small mb-3">Please indicate if you have any of these symptoms:</p>
+                            
+                            <div class="table-responsive">
+                                <table class="table table-sm diagnosis-form-table">
+                                    <tbody>
+                                        {% for field in form %}
+                                            {% if 'symptom_' in field.html_name %}
+                                                <tr class="symptom-row">
+                                                    <td class="symptom-label">
+                                                        <strong>{{ field.label|safe }}</strong>
+                                                        {% if field.help_text %}
+                                                            <br><small class="text-muted d-block mt-1">{{ field.help_text }}</small>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td class="symptom-field">
+                                                        <div class="options-group">
+                                                            {% for widget in field %}
+                                                                <div class="form-check form-check-inline">
+                                                                    {{ widget.tag }}
+                                                                    <label class="form-check-label" for="{{ widget.id }}">
+                                                                        {{ widget.choice_label }}
+                                                                    </label>
+                                                                </div>
+                                                            {% endfor %}
+                                                        </div>
+                                                        {% if field.errors %}
+                                                            <div class="invalid-feedback d-block">
+                                                                {{ field.errors.0 }}
+                                                            </div>
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <!-- Other Symptoms Section -->
+                        <div class="mb-5">
+                            <h5 class="text-info mb-3">
+                                <i class="bi bi-chat-left-text"></i> Other Symptoms (Optional)
+                            </h5>
+                            <p class="text-muted small mb-3">Describe any additional symptoms you're experiencing. Our AI will extract relevant keywords to improve diagnosis accuracy.</p>
+                            
+                            {% for field in form %}
+                                {% if field.html_name == 'other_symptoms' %}
+                                    <div class="form-group mb-3">
+                                        <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                                        {{ field }}
+                                        {% if field.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {{ field.errors.0 }}
+                                            </div>
+                                        {% endif %}
+                                        <small class="form-text text-muted d-block mt-2">{{ field.help_text }}</small>
+                                    </div>
+                                    <div class="alert alert-light border-left border-info">
+                                        <strong>Examples:</strong> "running nose, sore throat, body ache" or "I have weakness, fever, and difficulty breathing"
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <a href="{% url 'patient_dashboard' %}" class="btn btn-outline-secondary btn-lg">
+                                <i class="bi bi-arrow-left"></i> Back
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-check-circle"></i> Analyze Symptoms
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Information Card -->
+            <div class="card mt-4 border-info">
+                <div class="card-body">
+                    <h5 class="card-title text-info">
+                        <i class="bi bi-info-circle"></i> Important Disclaimer
+                    </h5>
+                    <p class="card-text mb-0">
+                        This self-diagnosis tool is for <strong>informational purposes only</strong> and should not be used as a substitute for professional medical advice.
+                        Always consult with a qualified healthcare professional for proper diagnosis and treatment.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

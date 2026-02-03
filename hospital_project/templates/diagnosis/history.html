@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+
+{% block title %}Diagnosis History - Hospital{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1 class="mb-2">
+                <i class="bi bi-clock-history"></i> Diagnosis History
+            </h1>
+            <p class="text-muted">View your past self-diagnosis records</p>
+        </div>
+        <div class="col-md-4 text-end">
+            <a href="{% url 'diagnosis_index' %}" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> New Diagnosis
+            </a>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Total Diagnoses</h6>
+                    <h3 class="mb-0">{{ total_diagnoses }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Appointments Booked</h6>
+                    <h3 class="mb-0">{{ booked_count }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Pending Booking</h6>
+                    <h3 class="mb-0">{{ pending_count }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if diagnosis_records %}
+        <div class="row">
+            {% for record in diagnosis_records %}
+                <div class="col-lg-12 mb-4">
+                    <div class="card border-left-primary">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5 class="card-title mb-2">
+                                        {{ record.predicted_condition }}
+                                        {% if record.has_urgent_symptoms %}
+                                            <span class="badge bg-danger">🚨 Urgent Symptoms</span>
+                                        {% endif %}
+                                    </h5>
+                                    
+                                    <p class="mb-2">
+                                        <strong>Specialization:</strong>
+                                        <span class="badge bg-info">{{ record.predicted_specialization }}</span>
+                                    </p>
+                                    
+                                    <p class="mb-2">
+                                        <strong>Confidence:</strong>
+                                        <span class="badge bg-{% if record.confidence_level == 'high' %}success{% elif record.confidence_level == 'medium' %}warning{% else %}danger{% endif %}">
+                                            {{ record.get_confidence_level_display }} ({{ record.confidence_score|floatformat:1 }}%)
+                                        </span>
+                                    </p>
+                                    
+                                    <p class="mb-2">
+                                        <strong>Symptoms:</strong><br>
+                                        <small>
+                                            {% for symptom in record.symptoms.all %}
+                                                <span class="badge bg-secondary me-1 mb-1">{{ symptom.name }}</span>
+                                            {% endfor %}
+                                        </small>
+                                    </p>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <p class="mb-2">
+                                        <strong>Date:</strong>
+                                        {{ record.created_at|date:"M d, Y - g:i A" }}
+                                    </p>
+                                    
+                                    {% if record.booked_doctor %}
+                                        <p class="mb-2">
+                                            <strong>Doctor:</strong>
+                                            <br>
+                                            <small>
+                                                <i class="bi bi-person-fill"></i> {{ record.booked_doctor.user.get_full_name }}
+                                                <br>
+                                                <i class="bi bi-hospital"></i> {{ record.booked_doctor.specialization }}
+                                            </small>
+                                        </p>
+                                        <p class="mb-0">
+                                            <span class="badge bg-success">
+                                                <i class="bi bi-check-circle"></i> Booked
+                                            </span>
+                                        </p>
+                                    {% else %}
+                                        <p class="mb-0">
+                                            <a href="{% url 'diagnosis_results' record.id %}" class="btn btn-sm btn-primary">
+                                                <i class="bi bi-calendar-check"></i> View & Book
+                                            </a>
+                                        </p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info" role="alert">
+            <i class="bi bi-info-circle"></i>
+            <strong>No diagnosis records yet.</strong>
+            <a href="{% url 'diagnosis_index' %}">Start a new self-diagnosis</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

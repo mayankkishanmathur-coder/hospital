@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Appointment Details{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1>Appointment Details</h1>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header {% if appointment.status == 'approved' %}bg-success{% elif appointment.status == 'pending' %}bg-warning{% elif appointment.status == 'rejected' %}bg-danger{% else %}bg-secondary{% endif %} text-white">
+                    <h5 class="mb-0">{{ appointment.get_status_display }}</h5>
+                </div>
+                <div class="card-body p-5">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h6>Doctor Information</h6>
+                            <p>
+                                <strong>Name:</strong> Dr. {{ appointment.doctor.user.first_name }} {{ appointment.doctor.user.last_name }}<br>
+                                <strong>Specialization:</strong> {{ appointment.doctor.specialization.name }}<br>
+                                <strong>Experience:</strong> {{ appointment.doctor.experience_years }} years<br>
+                                <strong>Consultation Fee:</strong> Rs. {{ appointment.doctor.consultation_fee }}<br>
+                                <strong>Contact:</strong> {{ appointment.doctor.phone }}
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Appointment Schedule</h6>
+                            <p>
+                                <strong>Date:</strong> {{ appointment.appointment_date }}<br>
+                                <strong>Time:</strong> {{ appointment.appointment_time }}<br>
+                                <strong>Reason:</strong> {{ appointment.reason }}<br>
+                                <strong>Booked On:</strong> {{ appointment.created_at|date:"d M Y, H:i" }}
+                            </p>
+                        </div>
+                    </div>
+
+                    {% if appointment.notes %}
+                        <div class="alert alert-info">
+                            <strong>Doctor's Notes:</strong>
+                            <p class="mb-0">{{ appointment.notes }}</p>
+                        </div>
+                    {% endif %}
+
+                    {% if appointment.rejection_reason %}
+                        <div class="alert alert-danger">
+                            <strong>Rejection Reason:</strong>
+                            <p class="mb-0">{{ appointment.rejection_reason }}</p>
+                        </div>
+                    {% endif %}
+
+                    <div>
+                        <a href="{% url 'patient_dashboard' %}" class="btn btn-primary">Back to Appointments</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

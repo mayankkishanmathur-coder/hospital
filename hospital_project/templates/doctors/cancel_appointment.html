@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Cancel Appointment{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1>Cancel Appointment</h1>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body p-5">
+                    <div class="alert alert-warning">
+                        <h5>Confirm Cancellation</h5>
+                        <p>Are you sure you want to cancel this appointment?</p>
+                    </div>
+
+                    <div class="mb-4">
+                        <h6>Patient: {{ appointment.patient.user.first_name }} {{ appointment.patient.user.last_name }}</h6>
+                        <p>Date: {{ appointment.appointment_date }} at {{ appointment.appointment_time }}</p>
+                    </div>
+
+                    <form method="post" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger w-100 mb-2">Yes, Cancel This Appointment</button>
+                    </form>
+
+                    <a href="{% url 'doctor_dashboard' %}" class="btn btn-outline-secondary w-100">No, Go Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

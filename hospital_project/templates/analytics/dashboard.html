@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+
+{% block title %}Analytics Dashboard - MediBridge{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1>Analytics Dashboard</h1>
+        <p class="text-white-50">Hospital Management Analytics & KPIs</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <!-- Key Metrics -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h3 class="text-primary">{{ total_appointments }}</h3>
+                    <p class="card-text">Total Appointments</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h3 class="text-success">{{ total_patients }}</h3>
+                    <p class="card-text">Total Patients</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h3 class="text-info">{{ total_doctors }}</h3>
+                    <p class="card-text">Total Doctors</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h3 class="text-warning">${{ total_revenue|floatformat:0 }}</h3>
+                    <p class="card-text">Total Revenue</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Status Distribution -->
+    <div class="row mb-4">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Appointment Status Distribution</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-sm">
+                        <tr>
+                            <td><strong>Pending</strong></td>
+                            <td>
+                                <div class="progress">
+                                    <div class="progress-bar bg-warning text-dark" role="progressbar" style="width: 25%; min-width: 50px;">{{ pending }}</div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Approved</strong></td>
+                            <td>
+                                <div class="progress">
+                                    <div class="progress-bar bg-info text-white" role="progressbar" style="width: 25%; min-width: 50px;">{{ approved }}</div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Completed</strong></td>
+                            <td>
+                                <div class="progress">
+                                    <div class="progress-bar bg-success text-white" role="progressbar" style="width: 25%; min-width: 50px;">{{ completed }}</div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Rejected</strong></td>
+                            <td>
+                                <div class="progress">
+                                    <div class="progress-bar bg-danger text-white" role="progressbar" style="width: 12%; min-width: 50px;">{{ rejected }}</div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cancelled</strong></td>
+                            <td>
+                                <div class="progress">
+                                    <div class="progress-bar bg-secondary text-white" role="progressbar" style="width: 13%; min-width: 50px;">{{ cancelled }}</div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Rating Statistics</h5>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-3">
+                        <h2 class="text-success">{{ avg_rating|floatformat:1 }} / 5.0</h2>
+                        <p>Average Rating</p>
+                    </div>
+                    <div class="text-center">
+                        <h4>{{ total_reviews }}</h4>
+                        <p>Total Reviews</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <a href="{% url 'doctor_analytics' %}" class="card text-decoration-none">
+                <div class="card-body text-center">
+                    <h5><i class="bi bi-person-badge"></i> Doctor Analytics</h5>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-4 mb-3">
+            <a href="{% url 'patient_analytics' %}" class="card text-decoration-none">
+                <div class="card-body text-center">
+                    <h5><i class="bi bi-people"></i> Patient Analytics</h5>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-4 mb-3">
+            <a href="{% url 'revenue_analytics' %}" class="card text-decoration-none">
+                <div class="card-body text-center">
+                    <h5><i class="bi bi-cash-coin"></i> Revenue Analytics</h5>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

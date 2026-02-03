@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}Suggest Appointments - MediBridge{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1>Alternative Appointment Slots</h1>
+        <p class="text-white-50">Book a new appointment with another doctor or reschedule with the same doctor</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    {% if availability %}
+        <div class="row">
+            {% for slot in availability %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">{{ slot.day_of_week }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>Time Slot:</strong><br>
+                            {{ slot.start_time }} - {{ slot.end_time }}</p>
+                            
+                            <p><strong>Duration:</strong><br>
+                            {{ slot.slot_duration }} minutes</p>
+
+                            <p><strong>Status:</strong><br>
+                            {% if slot.is_available %}
+                                <span class="badge bg-success">Available</span>
+                            {% else %}
+                                <span class="badge bg-danger">Unavailable</span>
+                            {% endif %}
+                            </p>
+                        </div>
+                        {% if slot.is_available %}
+                            <div class="card-footer">
+                                <a href="{% url 'book_appointment' %}" class="btn btn-primary w-100">
+                                    <i class="bi bi-calendar-plus"></i> Book This Slot
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-warning text-center">
+            <h4>No Available Slots</h4>
+            <p>{{ doctor.user.first_name }} {{ doctor.user.last_name }} has no available slots at the moment.</p>
+            <p>You can add yourself to the waiting list to be notified when a slot becomes available.</p>
+            <a href="{% url 'patient_dashboard' %}" class="btn btn-primary">Back to Dashboard</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block title %}Search Doctors - MediBridge{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1>Find a Doctor</h1>
+        <p class="text-white-50">Browse our network of experienced healthcare professionals</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <form method="get" class="mb-5">
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <input type="text" class="form-control" name="search" placeholder="Doctor name or specialization..." value="{{ request.GET.search }}">
+            </div>
+            <div class="col-md-4 mb-3">
+                <select class="form-control" name="specialization">
+                    <option value="">All Specializations</option>
+                    {% for spec in specializations %}
+                        <option value="{{ spec.id }}" {% if request.GET.specialization|add:"0" == spec.id %}selected{% endif %}>{{ spec.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4 mb-3">
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="bi bi-search"></i> Search
+                </button>
+            </div>
+        </div>
+    </form>
+
+    {% if doctors %}
+        <div class="row">
+            {% for doctor in doctors %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card doctor-card h-100">
+                        {% if doctor.profile_image %}
+                            <img src="{{ doctor.profile_image.url }}" class="card-img-top" alt="Dr. {{ doctor.user.first_name }}">
+                        {% else %}
+                            <img src="https://via.placeholder.com/200?text=Dr.+{{ doctor.user.first_name }}" class="card-img-top" alt="Dr. {{ doctor.user.first_name }}">
+                        {% endif %}
+                        
+                        <div class="card-body">
+                            <h5 class="card-title">Dr. {{ doctor.user.first_name }} {{ doctor.user.last_name }}</h5>
+                            <p class="card-text text-muted">{{ doctor.specialization.name }}</p>
+                            
+                            <div class="mb-3">
+                                {% for i in "12345" %}
+                                    {% if i <= doctor.rating %}
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                    {% elif doctor.rating > i|add:"-1" %}
+                                        <i class="bi bi-star-half text-warning"></i>
+                                    {% else %}
+                                        <i class="bi bi-star text-warning"></i>
+                                    {% endif %}
+                                {% endfor %}
+                                <small class="text-muted">({{ doctor.total_ratings }} reviews)</small>
+                            </div>
+
+                            <p class="card-text">
+                                <strong>Experience:</strong> {{ doctor.experience_years }} years
+                            </p>
+
+                            <p class="card-text">
+                                <strong>Consultation Fee:</strong> ${{ doctor.consultation_fee }}
+                            </p>
+
+                            {% if doctor.bio %}
+                                <p class="card-text small">{{ doctor.bio|truncatewords:15 }}</p>
+                            {% endif %}
+
+                            <a href="{% url 'view_doctor_profile' doctor.id %}" class="btn btn-primary btn-sm w-100">
+                                <i class="bi bi-eye"></i> View Profile
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center">
+            <h4>No doctors found</h4>
+            <p>Try adjusting your search criteria or browse all doctors.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
